@@ -19,7 +19,7 @@ import retrofit2.converter.moshi.MoshiConverterFactory;
 @Module
 public class RetrofitModule {
 
-    private static final String API = "https://api.themoviedb.org/3/";
+    private static final String API = "https://d17h27t6h515a5.cloudfront.net/";
 
     @Provides
     @Singleton
