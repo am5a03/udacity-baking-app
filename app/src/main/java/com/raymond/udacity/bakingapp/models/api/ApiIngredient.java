@@ -1,6 +1,6 @@
 package com.raymond.udacity.bakingapp.models.api;
 
-class ApiIngredient {
+public class ApiIngredient {
     public String quantity;
 
     public String measure;

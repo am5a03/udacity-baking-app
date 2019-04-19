@@ -14,6 +14,8 @@ import dagger.android.support.AndroidSupportInjectionModule;
                 AndroidSupportInjectionModule.class,
                 AppModule.class,
                 RetrofitModule.class,
+                RoomModule.class,
+                RepositoryModule.class,
                 ActivityBindingModule.class
         }
 )
