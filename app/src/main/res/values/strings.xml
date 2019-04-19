@@ -4,4 +4,6 @@
 
     <string name="ingredients">Ingredients</string>
     <string name="steps">Steps</string>
+
+    <string name="serving">Serving : %1$s</string>
 </resources>

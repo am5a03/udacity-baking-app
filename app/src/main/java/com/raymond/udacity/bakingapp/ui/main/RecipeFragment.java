@@ -40,6 +40,7 @@ public class RecipeFragment extends BaseFragment {
         viewModel.recipeClickLiveData.observe(this, recipe -> {
             Timber.d("recipe=" + recipe);
         });
+        adapter = new RecipeAdapter(viewModel.clickListener);
     }
 
     @Nullable
@@ -52,12 +53,9 @@ public class RecipeFragment extends BaseFragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         ButterKnife.bind(this, view);
         super.onViewCreated(view, savedInstanceState);
-        adapter = new RecipeAdapter(viewModel.clickListener);
         layoutManager = new LinearLayoutManager(view.getContext());
-
         recyclerView.setAdapter(adapter);
         recyclerView.setLayoutManager(layoutManager);
-
         viewModel.loadRecipe();
     }
 }

@@ -6,7 +6,9 @@
 
     <color name="colorSecondary">#90caf9</color>
     <color name="colorSecondaryLight">#c3fdff</color>
-    <color name="colorSeoncdaryDark">#5d99c6</color>
+    <color name="colorSecondaryDark">#5d99c6</color>
     
     <color name="colorAccent">@color/colorSecondary</color>
+
+    <color name="recipeDescBg">#80000000</color>
 </resources>

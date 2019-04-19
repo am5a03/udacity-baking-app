@@ -12,12 +12,13 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.facebook.drawee.view.SimpleDraweeView;
 import com.raymond.udacity.bakingapp.R;
 import com.raymond.udacity.bakingapp.models.db.Recipe;
+import com.raymond.udacity.bakingapp.ui.BaseViewHolder;
+import com.raymond.udacity.bakingapp.ui.BaseViewModel;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
-import butterknife.ButterKnife;
 
 public class RecipeAdapter extends RecyclerView.Adapter<RecipeAdapter.VH> {
     private final List<Recipe> recipes = new ArrayList<>();
@@ -42,9 +43,12 @@ public class RecipeAdapter extends RecyclerView.Adapter<RecipeAdapter.VH> {
 
     @Override
     public void onBindViewHolder(@NonNull VH holder, int position) {
-        holder.thumbnail.setImageURI(recipes.get(position).image);
-        holder.title.setText(recipes.get(position).name);
-        holder.recipeCard.setTag(recipes.get(position));
+        final Recipe recipe = recipes.get(position);
+
+        holder.thumbnail.setImageURI(recipe.image);
+        holder.title.setText(recipe.name);
+        holder.serving.setText(String.format(holder.itemView.getResources().getString(R.string.serving), recipe.servings));
+        holder.recipeCard.setTag(recipe);
         holder.recipeCard.setOnClickListener(clickListener);
     }
 
@@ -53,7 +57,7 @@ public class RecipeAdapter extends RecyclerView.Adapter<RecipeAdapter.VH> {
         return recipes.size();
     }
 
-    static class VH extends RecyclerView.ViewHolder {
+    static class VH extends BaseViewHolder {
         @BindView(R.id.thumbnail)
         public SimpleDraweeView thumbnail;
 
@@ -63,9 +67,11 @@ public class RecipeAdapter extends RecyclerView.Adapter<RecipeAdapter.VH> {
         @BindView(R.id.recipe_card)
         public CardView recipeCard;
 
+        @BindView(R.id.serving)
+        public TextView serving;
+
         VH(@NonNull View itemView) {
             super(itemView);
-            ButterKnife.bind(this, itemView);
         }
     }
 }

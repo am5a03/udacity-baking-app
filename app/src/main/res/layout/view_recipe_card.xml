@@ -12,7 +12,7 @@
         android:layout_width="match_parent"
         android:layout_height="200dp"
         android:clickable="true"
-        app:cardBackgroundColor="@color/colorSecondary"
+        app:cardBackgroundColor="@color/colorSecondaryDark"
         app:cardUseCompatPadding="true"
         app:cardCornerRadius="4dp">
 
@@ -21,13 +21,35 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent" />
 
-        <TextView
-            tools:text="Brownies"
-            android:id="@+id/title"
-            android:textAppearance="@style/TextAppearance.AppCompat.Title"
+        <LinearLayout
             android:layout_gravity="center"
+            android:orientation="vertical"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:paddingLeft="@dimen/material_large"
+                android:paddingRight="@dimen/material_large"
+                android:paddingTop="@dimen/material_medium"
+                android:paddingBottom="@dimen/material_medium"
+                tools:text="Brownies"
+                android:id="@+id/title"
+                android:background="@color/recipeDescBg"
+                android:textAppearance="@style/TextAppearance.AppCompat.Headline"
+                android:layout_gravity="center"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+
+            <TextView
+                android:id="@+id/serving"
+                android:textAppearance="@style/TextAppearance.AppCompat.Caption"
+                android:layout_gravity="center"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                tools:text="Serving 1" />
+
+        </LinearLayout>
+
 
     </androidx.cardview.widget.CardView>
 
