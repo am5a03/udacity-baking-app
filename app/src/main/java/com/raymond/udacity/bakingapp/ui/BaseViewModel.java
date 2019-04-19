@@ -12,4 +12,10 @@ public abstract class BaseViewModel extends ViewModel {
     @Inject
     protected RecipeRepository recipeRepository;
     protected final CompositeDisposable disposable = new CompositeDisposable();
+
+    @Override
+    protected void onCleared() {
+        super.onCleared();
+        disposable.dispose();
+    }
 }

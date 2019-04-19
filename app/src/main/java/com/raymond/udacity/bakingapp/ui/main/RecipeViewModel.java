@@ -38,10 +38,4 @@ public class RecipeViewModel extends BaseViewModel {
                         .subscribe(recipeLiveData::postValue)
         );
     }
-
-    @Override
-    protected void onCleared() {
-        super.onCleared();
-        disposable.dispose();
-    }
 }
