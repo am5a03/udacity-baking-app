@@ -6,27 +6,30 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.facebook.drawee.view.SimpleDraweeView;
 import com.raymond.udacity.bakingapp.R;
 import com.raymond.udacity.bakingapp.models.db.Recipe;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import dagger.Binds;
 
 public class RecipeAdapter extends RecyclerView.Adapter<RecipeAdapter.VH> {
-    private List<Recipe> recipes;
+    private final List<Recipe> recipes = new ArrayList<>();
+    private final View.OnClickListener clickListener;
 
-    public RecipeAdapter() {
-
+    RecipeAdapter(View.OnClickListener clickListener) {
+        this.clickListener = clickListener;
     }
 
-    public void setRecipes(List<Recipe> recipes) {
-        this.recipes = recipes;
+    void setRecipes(List<Recipe> recipes) {
+        this.recipes.clear();
+        this.recipes.addAll(recipes);
         notifyDataSetChanged();
     }
 
@@ -41,11 +44,13 @@ public class RecipeAdapter extends RecyclerView.Adapter<RecipeAdapter.VH> {
     public void onBindViewHolder(@NonNull VH holder, int position) {
         holder.thumbnail.setImageURI(recipes.get(position).image);
         holder.title.setText(recipes.get(position).name);
+        holder.recipeCard.setTag(recipes.get(position));
+        holder.recipeCard.setOnClickListener(clickListener);
     }
 
     @Override
     public int getItemCount() {
-        return recipes == null ? 0 : recipes.size();
+        return recipes.size();
     }
 
     static class VH extends RecyclerView.ViewHolder {
@@ -54,6 +59,9 @@ public class RecipeAdapter extends RecyclerView.Adapter<RecipeAdapter.VH> {
 
         @BindView(R.id.title)
         public TextView title;
+
+        @BindView(R.id.recipe_card)
+        public CardView recipeCard;
 
         VH(@NonNull View itemView) {
             super(itemView);

@@ -22,6 +22,7 @@ import javax.inject.Inject;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import timber.log.Timber;
 
 public class RecipeFragment extends BaseFragment {
 
@@ -36,6 +37,9 @@ public class RecipeFragment extends BaseFragment {
         super.onCreate(savedInstanceState);
         viewModel = ViewModelProviders.of(this, viewModelFactory).get(RecipeViewModel.class);
         viewModel.recipeLiveData.observe(this, recipes -> adapter.setRecipes(recipes));
+        viewModel.recipeClickLiveData.observe(this, recipe -> {
+            Timber.d("recipe=" + recipe);
+        });
     }
 
     @Nullable
@@ -48,7 +52,7 @@ public class RecipeFragment extends BaseFragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         ButterKnife.bind(this, view);
         super.onViewCreated(view, savedInstanceState);
-        adapter = new RecipeAdapter();
+        adapter = new RecipeAdapter(viewModel.clickListener);
         layoutManager = new LinearLayoutManager(view.getContext());
 
         recyclerView.setAdapter(adapter);

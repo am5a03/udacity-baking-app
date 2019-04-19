@@ -21,4 +21,10 @@ public class Recipe {
     public Step[] steps;
 
     public Ingredient[] ingredients;
+
+    @NonNull
+    @Override
+    public String toString() {
+        return "name={" + name + "}";
+    }
 }

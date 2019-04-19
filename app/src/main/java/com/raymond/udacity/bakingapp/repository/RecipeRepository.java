@@ -2,6 +2,8 @@ package com.raymond.udacity.bakingapp.repository;
 
 import android.content.SharedPreferences;
 
+import androidx.collection.ArrayMap;
+
 import com.raymond.udacity.bakingapp.api.ApiService;
 import com.raymond.udacity.bakingapp.models.api.ApiRecipe;
 import com.raymond.udacity.bakingapp.models.db.Ingredient;
@@ -12,11 +14,11 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Optional;
 
 import javax.inject.Inject;
 
 import io.reactivex.Single;
+
 public class RecipeRepository {
 
     private ApiService apiService;
@@ -27,6 +29,8 @@ public class RecipeRepository {
     private static final long DATA_TIMEOUT = 60 * 1000;
 
     private final Recipe dummy = new Recipe();
+
+    private Map<Recipe, Map<Integer, Step>> recipeStepMap = new HashMap<>();
 
     @Inject
     public RecipeRepository(ApiService apiService,
@@ -65,6 +69,24 @@ public class RecipeRepository {
                 }) : Single.just(recipe));
     }
 
+    public Single<Step> getStepByRecipe(int recipeId, int stepId) {
+        return Single.just(recipeId)
+                .flatMap(integer -> getRecipeById(recipeId))
+                .map(recipe -> {
+                    if (!recipeStepMap.containsKey(recipe)) {
+                        final ArrayMap<Integer, Step> stepMap = new ArrayMap<>();
+
+                        for (int i = 0; i < recipe.steps.length; i++) {
+                            stepMap.put(i, recipe.steps[i]);
+                        }
+
+                        recipeStepMap.put(recipe, stepMap);
+                    }
+                    final Map<Integer, Step> steps = recipeStepMap.get(recipe);
+                    return steps.get(stepId);
+                });
+    }
+
     private Single<List<Recipe>> createRecipeListFromApi() {
         return apiService.getReceipes().map(apiRecipes -> {
             final List<Recipe> recipeList = new ArrayList<>();
@@ -75,7 +97,7 @@ public class RecipeRepository {
             }
             sharedPref.edit().putLong(KEY_LAST_UPDATE_TS, System.currentTimeMillis()).apply();
             return recipeList;
-        });
+        }).onErrorReturnItem(new ArrayList<>());
     }
 
     private Recipe createRecipeFromApi(ApiRecipe apiRecipe) {
