@@ -10,7 +10,9 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.raymond.udacity.bakingapp.R;
 import com.raymond.udacity.bakingapp.models.db.Ingredient;
+import com.raymond.udacity.bakingapp.models.db.Recipe;
 import com.raymond.udacity.bakingapp.models.db.Step;
+import com.raymond.udacity.bakingapp.ui.BaseViewHolder;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -21,6 +23,7 @@ import butterknife.ButterKnife;
 
 public class RecipeStepListAdapter extends RecyclerView.Adapter {
 
+    private Recipe recipe;
     private final List<Step> steps = new ArrayList<>();
     private final List<Ingredient> ingredients = new ArrayList<>();
 
@@ -65,12 +68,13 @@ public class RecipeStepListAdapter extends RecyclerView.Adapter {
         }
     }
 
-    public void setData(Ingredient[] ingredients, Step[] steps) {
+    void setData(Recipe recipe) {
+        this.recipe = recipe;
         this.ingredients.clear();
-        this.ingredients.addAll(Arrays.asList(ingredients));
+        this.ingredients.addAll(Arrays.asList(recipe.ingredients));
 
         this.steps.clear();
-        this.steps.addAll(Arrays.asList(steps));
+        this.steps.addAll(Arrays.asList(recipe.steps));
 
         notifyDataSetChanged();
     }
@@ -86,7 +90,7 @@ public class RecipeStepListAdapter extends RecyclerView.Adapter {
         return R.layout.view_recipe_step;
     }
 
-    static class IngredientVH extends RecyclerView.ViewHolder {
+    static class IngredientVH extends BaseViewHolder {
         @BindView(R.id.ingredient_headline)
         TextView ingredientHeadline;
 
@@ -98,11 +102,10 @@ public class RecipeStepListAdapter extends RecyclerView.Adapter {
 
         IngredientVH(@NonNull View itemView) {
             super(itemView);
-            ButterKnife.bind(this, itemView);
         }
     }
 
-    static class VH extends RecyclerView.ViewHolder {
+    static class VH extends BaseViewHolder {
 
         @BindView(R.id.step_headline)
         TextView stepHeadline;
@@ -112,7 +115,6 @@ public class RecipeStepListAdapter extends RecyclerView.Adapter {
 
         VH(@NonNull View itemView) {
             super(itemView);
-            ButterKnife.bind(this, itemView);
         }
     }
 }

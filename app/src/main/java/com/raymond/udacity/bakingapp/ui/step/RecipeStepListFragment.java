@@ -33,7 +33,7 @@ public class RecipeStepListFragment extends BaseFragment {
         adapter = new RecipeStepListAdapter();
         viewModel = ViewModelProviders.of(this, viewModelFactory)
                 .get(RecipeStepListViewModel.class);
-        viewModel.recipeLiveData.observe(this, recipe -> adapter.setData(recipe.ingredients, recipe.steps));
+        viewModel.recipeLiveData.observe(this, recipe -> adapter.setData(recipe));
     }
 
     @Nullable
