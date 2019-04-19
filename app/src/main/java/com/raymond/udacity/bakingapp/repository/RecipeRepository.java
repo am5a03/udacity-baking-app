@@ -141,6 +141,7 @@ public class RecipeRepository {
             for (int i = 0; i < apiRecipe.ingredients.length; i++) {
                 final Ingredient ingredient = new Ingredient();
                 ingredient.ingredient = apiRecipe.ingredients[i].ingredient;
+                ingredient.ingredient = ingredient.ingredient.substring(0, 1).toUpperCase() + ingredient.ingredient.substring(1);
                 ingredient.measure = apiRecipe.ingredients[i].measure;
                 ingredient.quantity = apiRecipe.ingredients[i].quantity;
                 ingredients[i] = ingredient;

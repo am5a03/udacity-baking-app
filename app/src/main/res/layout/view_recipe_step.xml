@@ -20,7 +20,9 @@
         android:paddingTop="@dimen/material_medium"
         android:paddingBottom="@dimen/material_medium"
         tools:text="Step 1"
-        android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+        android:textAppearance="@style/TextAppearance.AppCompat.Body2"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content"
+        android:clickable="true"
+        android:background="?attr/selectableItemBackground"/>
 </LinearLayout>

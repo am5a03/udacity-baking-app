@@ -11,7 +11,7 @@
         android:paddingTop="@dimen/material_medium"
         android:paddingBottom="@dimen/material_medium"
         tools:text="Sugar"
-        android:textAppearance="@style/TextAppearance.AppCompat"
+        android:textAppearance="@style/TextAppearance.AppCompat.Body2"
         android:layout_weight="1"
         android:layout_width="0dp"
         android:layout_height="wrap_content" />
@@ -24,8 +24,8 @@
         tools:text="1 tbps"
         android:textAppearance="@style/TextAppearance.AppCompat.Body2"
         android:layout_gravity="end"
-        android:gravity="end"
+        android:gravity="end|center_vertical"
         android:layout_weight="1"
         android:layout_width="0dp"
-        android:layout_height="wrap_content" />
+        android:layout_height="match_parent" />
 </LinearLayout>

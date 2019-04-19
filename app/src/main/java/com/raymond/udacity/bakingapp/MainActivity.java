@@ -10,6 +10,7 @@ import com.raymond.udacity.bakingapp.models.api.ApiRecipe;
 import com.raymond.udacity.bakingapp.models.db.Recipe;
 import com.raymond.udacity.bakingapp.repository.RecipeRepository;
 import com.raymond.udacity.bakingapp.ui.main.RecipeFragment;
+import com.raymond.udacity.bakingapp.ui.step.RecipeStepListFragment;
 
 import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
@@ -53,7 +54,7 @@ public class MainActivity extends DaggerAppCompatActivity {
         ButterKnife.bind(this);
         setSupportActionBar(toolbar);
 
-        initFragment(new RecipeFragment());
+        initFragment(new RecipeStepListFragment());
     }
 
     private void initFragment(Fragment fragment) {

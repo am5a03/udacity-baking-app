@@ -13,6 +13,7 @@ import com.raymond.udacity.bakingapp.models.db.Ingredient;
 import com.raymond.udacity.bakingapp.models.db.Step;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import butterknife.BindView;
@@ -26,11 +27,11 @@ public class RecipeStepListAdapter extends RecyclerView.Adapter {
     @NonNull
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        final View v = LayoutInflater.from(parent.getContext()).inflate(viewType, parent);
+        final View v = LayoutInflater.from(parent.getContext()).inflate(viewType, parent, false);
         switch (viewType) {
-            case R.layout.view_ingreident_container:
+            case R.layout.view_item_ingredients:
                 return new IngredientVH(v);
-            case R.layout.view_recipe_step_container:
+            case R.layout.view_recipe_step:
                 return new VH(v);
             default:
                 throw new IllegalArgumentException("view typ not supported");
@@ -52,23 +53,26 @@ public class RecipeStepListAdapter extends RecyclerView.Adapter {
         }
 
         if (holder instanceof VH) {
-            if (position - ingredients.size() == 0) {
+            final int offset = position - ingredients.size();
+            if (offset == 0) {
                 ((VH) holder).stepHeadline.setVisibility(View.VISIBLE);
             } else {
                 ((VH) holder).stepHeadline.setVisibility(View.GONE);
             }
-            final Step step = steps.get(position - ingredients.size());
-            ((VH) holder).step.setText(step.shortDescription);
+            final Step step = steps.get(offset);
+            ((VH) holder).step.setText((offset + 1) + ". " + step.shortDescription);
             ((VH) holder).itemView.setTag(step);
         }
     }
 
-    public void setData(List<Ingredient> ingredients, List<Step> steps) {
+    public void setData(Ingredient[] ingredients, Step[] steps) {
         this.ingredients.clear();
-        this.ingredients.addAll(ingredients);
+        this.ingredients.addAll(Arrays.asList(ingredients));
 
         this.steps.clear();
-        this.steps.addAll(steps);
+        this.steps.addAll(Arrays.asList(steps));
+
+        notifyDataSetChanged();
     }
 
     @Override
@@ -78,8 +82,8 @@ public class RecipeStepListAdapter extends RecyclerView.Adapter {
 
     @Override
     public int getItemViewType(int position) {
-        if (position == 0) return R.layout.view_ingreident_container;
-        return R.layout.view_recipe_step_container;
+        if (position < ingredients.size()) return R.layout.view_item_ingredients;
+        return R.layout.view_recipe_step;
     }
 
     static class IngredientVH extends RecyclerView.ViewHolder {
