@@ -43,6 +43,10 @@ public class RecipeRepository {
         dummy.id = Recipe.NOT_FOUND_ID;
     }
 
+    /**
+     *
+     * @return
+     */
     public Single<List<Recipe>> getAllRecipes() {
         return Single.just(database)
                 .map(database -> database.getRecipeDao().getAll())
@@ -57,6 +61,11 @@ public class RecipeRepository {
                 });
     }
 
+    /**
+     *
+     * @param id
+     * @return
+     */
     public Single<Recipe> getRecipeById(int id) {
         return Single.just(database)
                 .map(database1 -> {
@@ -69,24 +78,40 @@ public class RecipeRepository {
                 }) : Single.just(recipe));
     }
 
-    public Single<Step> getStepByRecipe(int recipeId, int stepId) {
-        return Single.just(recipeId)
-                .flatMap(integer -> getRecipeById(recipeId))
-                .map(recipe -> {
-                    if (!recipeStepMap.containsKey(recipe)) {
-                        final ArrayMap<Integer, Step> stepMap = new ArrayMap<>();
+    /**
+     *
+     * @param recipe
+     * @param stepId
+     * @return
+     */
+    public Single<Step> getStepByRecipe(Recipe recipe, int stepId) {
+        if (recipeStepMap.containsKey(recipe) &&
+                recipeStepMap.get(recipe) != null && recipeStepMap.get(recipe).containsKey(stepId)) {
+            return Single.just(recipeStepMap.get(recipe).get(stepId));
+        } else {
+            return Single.just(recipe.id)
+                    .flatMap(integer -> getRecipeById(recipe.id))
+                    .map(recipe1 -> {
+                        if (!recipeStepMap.containsKey(recipe1)) {
+                            final ArrayMap<Integer, Step> stepMap = new ArrayMap<>();
 
-                        for (int i = 0; i < recipe.steps.length; i++) {
-                            stepMap.put(i, recipe.steps[i]);
+                            for (int i = 0; i < recipe1.steps.length; i++) {
+                                stepMap.put(i, recipe1.steps[i]);
+                            }
+
+                            recipeStepMap.put(recipe1, stepMap);
                         }
+                        final Map<Integer, Step> steps = recipeStepMap.get(recipe1);
+                        return steps.get(stepId);
+                    });
+        }
 
-                        recipeStepMap.put(recipe, stepMap);
-                    }
-                    final Map<Integer, Step> steps = recipeStepMap.get(recipe);
-                    return steps.get(stepId);
-                });
     }
 
+    /**
+     *
+     * @return
+     */
     private Single<List<Recipe>> createRecipeListFromApi() {
         return apiService.getReceipes().map(apiRecipes -> {
             final List<Recipe> recipeList = new ArrayList<>();
@@ -100,6 +125,11 @@ public class RecipeRepository {
         }).onErrorReturnItem(new ArrayList<>());
     }
 
+    /**
+     *
+     * @param apiRecipe
+     * @return
+     */
     private Recipe createRecipeFromApi(ApiRecipe apiRecipe) {
         final Recipe recipe = new Recipe();
         recipe.id = apiRecipe.id;

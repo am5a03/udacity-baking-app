@@ -7,6 +7,7 @@ import androidx.lifecycle.ViewModel;
 
 import com.raymond.udacity.bakingapp.models.db.Recipe;
 import com.raymond.udacity.bakingapp.repository.RecipeRepository;
+import com.raymond.udacity.bakingapp.ui.BaseViewModel;
 
 import java.util.List;
 
@@ -16,11 +17,9 @@ import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.schedulers.Schedulers;
 
-public class RecipeViewModel extends ViewModel {
+public class RecipeViewModel extends BaseViewModel {
 
-    @Inject
-    RecipeRepository recipeRepository;
-    private final CompositeDisposable disposable = new CompositeDisposable();
+
     final MutableLiveData<List<Recipe>> recipeLiveData = new MutableLiveData<>();
     final MutableLiveData<Recipe> recipeClickLiveData = new MutableLiveData<>();
     final View.OnClickListener clickListener = v -> {
