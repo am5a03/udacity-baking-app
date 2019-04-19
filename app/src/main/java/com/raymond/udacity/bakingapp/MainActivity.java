@@ -7,9 +7,21 @@ import com.google.android.material.snackbar.Snackbar;
 import com.raymond.udacity.bakingapp.api.ApiService;
 import com.raymond.udacity.bakingapp.di.AppViewModelFactory;
 import com.raymond.udacity.bakingapp.models.api.ApiRecipe;
+import com.raymond.udacity.bakingapp.models.db.Recipe;
+import com.raymond.udacity.bakingapp.repository.RecipeRepository;
+import com.raymond.udacity.bakingapp.ui.main.RecipeFragment;
 
 import androidx.appcompat.widget.Toolbar;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
+import androidx.lifecycle.ViewModelProvider;
+
+import butterknife.BindView;
+import butterknife.ButterKnife;
 import dagger.android.support.DaggerAppCompatActivity;
+import io.reactivex.Scheduler;
+import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.functions.Consumer;
 import io.reactivex.schedulers.Schedulers;
 import timber.log.Timber;
@@ -17,6 +29,7 @@ import timber.log.Timber;
 import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.ViewGroup;
 
 import java.util.List;
 
@@ -24,42 +37,34 @@ import javax.inject.Inject;
 
 public class MainActivity extends DaggerAppCompatActivity {
 
+    @Inject
+    ViewModelProvider.Factory viewModelFactory;
+
+    @Inject
+    RecipeRepository recipeRepository;
+
+    @BindView(R.id.toolbar)
+    Toolbar toolbar;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        Toolbar toolbar = findViewById(R.id.toolbar);
+        ButterKnife.bind(this);
         setSupportActionBar(toolbar);
 
-        FloatingActionButton fab = findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
-            }
-        });
+        initFragment(new RecipeFragment());
     }
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_main, menu);
-        return true;
-    }
+    private void initFragment(Fragment fragment) {
+        try {
+            FragmentManager fm = getSupportFragmentManager();
+            FragmentTransaction transaction = fm.beginTransaction();
 
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
-
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
+            transaction.replace(R.id.fragment_container, fragment);
+            transaction.commit();
+        } catch (Exception e) {
+            Timber.e(e);
         }
-
-        return super.onOptionsItemSelected(item);
     }
 }

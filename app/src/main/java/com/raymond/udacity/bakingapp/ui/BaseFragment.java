@@ -6,7 +6,7 @@ import javax.inject.Inject;
 
 import dagger.android.support.DaggerFragment;
 
-public class BaseFragment extends DaggerFragment {
+public abstract class BaseFragment extends DaggerFragment {
     @Inject
-    AppViewModelFactory viewModelFactory;
+    public AppViewModelFactory viewModelFactory;
 }

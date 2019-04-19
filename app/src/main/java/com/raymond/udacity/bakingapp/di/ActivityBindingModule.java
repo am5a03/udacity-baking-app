@@ -1,6 +1,7 @@
 package com.raymond.udacity.bakingapp.di;
 
 import com.raymond.udacity.bakingapp.MainActivity;
+import com.raymond.udacity.bakingapp.ui.main.RecipeModule;
 
 import dagger.Module;
 import dagger.android.ContributesAndroidInjector;
@@ -9,6 +10,10 @@ import dagger.android.ContributesAndroidInjector;
 public abstract class ActivityBindingModule {
 
     @ActivityScoped
-    @ContributesAndroidInjector()
+    @ContributesAndroidInjector(
+            modules = {
+                    RecipeModule.class
+            }
+    )
     abstract MainActivity mainActivity();
 }

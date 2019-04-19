@@ -9,7 +9,7 @@ import javax.inject.Singleton;
 import androidx.lifecycle.ViewModel;
 import androidx.lifecycle.ViewModelProvider;
 
-@Singleton
+//@Singleton
 public class AppViewModelFactory implements ViewModelProvider.Factory  {
     private final Map<Class<? extends ViewModel>, Provider<ViewModel>> creators;
 

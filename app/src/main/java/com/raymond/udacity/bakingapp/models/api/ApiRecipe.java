@@ -9,7 +9,7 @@ public class ApiRecipe {
 
     public ApiIngredient[] ingredients;
 
-    public String id;
+    public int id;
 
     public ApiStep[] steps;
 
