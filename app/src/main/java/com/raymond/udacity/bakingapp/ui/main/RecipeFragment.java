@@ -51,7 +51,6 @@ public class RecipeFragment extends BaseFragment {
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-        ButterKnife.bind(this, view);
         super.onViewCreated(view, savedInstanceState);
         layoutManager = new LinearLayoutManager(view.getContext());
         recyclerView.setAdapter(adapter);

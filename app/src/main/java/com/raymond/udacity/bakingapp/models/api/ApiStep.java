@@ -5,7 +5,7 @@ public class ApiStep {
 
     public String description;
 
-    public String id;
+    public int id;
 
     public String shortDescription;
 

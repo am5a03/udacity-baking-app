@@ -6,7 +6,7 @@ public class Step {
 
     public String description;
 
-    public String id;
+    public int id;
 
     public String shortDescription;
 

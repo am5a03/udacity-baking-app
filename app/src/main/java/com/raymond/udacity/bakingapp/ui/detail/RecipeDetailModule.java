@@ -13,6 +13,16 @@ import dagger.multibindings.IntoMap;
 
 @Module
 public abstract class RecipeDetailModule {
+
+    @FragmentScoped
+    @ContributesAndroidInjector
+    abstract RecipeAllDetailFragment contributeRecipeAllDetailFragment();
+
+    @Binds
+    @IntoMap
+    @ViewModelKey(RecipeAllDetailViewModel.class)
+    abstract ViewModel recipeAllDetailViewModel(RecipeAllDetailViewModel viewModel);
+
     @FragmentScoped
     @ContributesAndroidInjector
     abstract RecipeDetailFragment contributeRecipeDetailFragment();

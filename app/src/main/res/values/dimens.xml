@@ -4,4 +4,5 @@
     <dimen name="material_small">4dp</dimen>
     <dimen name="material_medium">8dp</dimen>
     <dimen name="material_large">16dp</dimen>
+    <dimen name="material_xlarge">32dp</dimen>
 </resources>

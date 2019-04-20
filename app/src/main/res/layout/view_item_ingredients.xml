@@ -6,8 +6,8 @@
     <TextView
         android:id="@+id/ingredient_headline"
         android:paddingTop="@dimen/material_large"
-        android:paddingLeft="@dimen/material_large"
-        android:paddingRight="@dimen/material_large"
+        android:paddingRight="@dimen/material_xlarge"
+        android:paddingLeft="@dimen/material_xlarge"
         android:text="@string/ingredients"
         android:textAppearance="@style/TextAppearance.AppCompat.Headline"
         android:layout_width="wrap_content"

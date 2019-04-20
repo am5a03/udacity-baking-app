@@ -1,7 +1,38 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
 
+    <com.google.android.exoplayer2.ui.PlayerView
+        android:visibility="gone"
+        android:id="@+id/player_view"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:controller_layout_id="@layout/exo_player_control_view"
+        app:surface_type="texture_view"
+        app:use_artwork="false"
+        app:use_controller="true" />
+
+    <TextView
+        tools:text="Prep the cookie crust."
+        android:id="@+id/short_description"
+        android:textAppearance="@style/TextAppearance.AppCompat.Title"
+        android:paddingTop="@dimen/material_large"
+        android:paddingLeft="32dp"
+        android:paddingRight="32dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
+    <TextView
+        android:id="@+id/description"
+        tools:text="2. Whisk the graham cracker crumbs, 50 grams (1/4 cup) of sugar, and 1/2 teaspoon of salt together in a medium bowl. Pour the melted butter and 1 teaspoon of vanilla into the dry ingredients and stir together until evenly mixed."
+        android:paddingTop="@dimen/material_medium"
+        android:textAppearance="@style/TextAppearance.AppCompat.Body2"
+        android:paddingLeft="32dp"
+        android:paddingRight="32dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
 </LinearLayout>

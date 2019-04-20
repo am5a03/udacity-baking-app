@@ -3,6 +3,7 @@ package com.raymond.udacity.bakingapp.repository;
 import android.content.SharedPreferences;
 
 import androidx.collection.ArrayMap;
+import androidx.collection.SparseArrayCompat;
 
 import com.raymond.udacity.bakingapp.api.ApiService;
 import com.raymond.udacity.bakingapp.models.api.ApiRecipe;
@@ -30,7 +31,7 @@ public class RecipeRepository {
 
     private final Recipe dummy = new Recipe();
 
-    private Map<Recipe, Map<Integer, Step>> recipeStepMap = new HashMap<>();
+    private final SparseArrayCompat<Map<Integer, Step>> recipeStepMap = new SparseArrayCompat<>();
 
     @Inject
     public RecipeRepository(ApiService apiService,
@@ -80,32 +81,45 @@ public class RecipeRepository {
 
     /**
      *
+     * @param recipeId
+     * @param stepId
+     * @return
+     */
+    public Single<Step> getStepByRecipe(int recipeId, int stepId) {
+        synchronized (recipeStepMap) {
+            if (recipeStepMap.containsKey(recipeId) &&
+                    recipeStepMap.get(recipeId) != null && recipeStepMap.get(recipeId).containsKey(stepId)) {
+                return Single.just(recipeStepMap.get(recipeId).get(stepId));
+            } else {
+                return Single.just(recipeId)
+                        .flatMap(integer -> getRecipeById(recipeId))
+                        .map(recipe1 -> {
+                            synchronized (recipeStepMap) {
+                                if (!recipeStepMap.containsKey(recipeId)) {
+                                    final ArrayMap<Integer, Step> stepMap = new ArrayMap<>();
+
+                                    for (int i = 0; i < recipe1.steps.length; i++) {
+                                        stepMap.put(i, recipe1.steps[i]);
+                                    }
+
+                                    recipeStepMap.put(recipe1.id, stepMap);
+                                }
+                                final Map<Integer, Step> steps = recipeStepMap.get(recipeId);
+                                return steps.get(stepId);
+                            }
+                        });
+            }
+        }
+    }
+
+    /**
+     *
      * @param recipe
      * @param stepId
      * @return
      */
-    public Single<Step> getStepByRecipe(Recipe recipe, int stepId) {
-        if (recipeStepMap.containsKey(recipe) &&
-                recipeStepMap.get(recipe) != null && recipeStepMap.get(recipe).containsKey(stepId)) {
-            return Single.just(recipeStepMap.get(recipe).get(stepId));
-        } else {
-            return Single.just(recipe.id)
-                    .flatMap(integer -> getRecipeById(recipe.id))
-                    .map(recipe1 -> {
-                        if (!recipeStepMap.containsKey(recipe1)) {
-                            final ArrayMap<Integer, Step> stepMap = new ArrayMap<>();
-
-                            for (int i = 0; i < recipe1.steps.length; i++) {
-                                stepMap.put(i, recipe1.steps[i]);
-                            }
-
-                            recipeStepMap.put(recipe1, stepMap);
-                        }
-                        final Map<Integer, Step> steps = recipeStepMap.get(recipe1);
-                        return steps.get(stepId);
-                    });
-        }
-
+    public Single<Step> getStepByRecipe(final Recipe recipe, final int stepId) {
+        return getStepByRecipe(recipe.id, stepId);
     }
 
     /**
