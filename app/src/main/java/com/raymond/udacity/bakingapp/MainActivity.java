@@ -39,7 +39,7 @@ public class MainActivity extends DaggerAppCompatActivity {
         ButterKnife.bind(this);
         setSupportActionBar(toolbar);
 
-        initFragment(RecipeAllDetailFragment.newInstance(1));
+        initFragment(RecipeAllDetailFragment.newInstance(2));
     }
 
     private void initFragment(Fragment fragment) {

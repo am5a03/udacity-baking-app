@@ -25,6 +25,7 @@ import com.raymond.udacity.bakingapp.models.db.Step;
 import com.raymond.udacity.bakingapp.ui.BaseFragment;
 
 import butterknife.BindView;
+import timber.log.Timber;
 
 public class RecipeDetailFragment extends BaseFragment {
 
@@ -41,6 +42,7 @@ public class RecipeDetailFragment extends BaseFragment {
     TextView shortDescription;
 
     private RecipeDetailViewModel viewModel;
+    @Nullable private SimpleExoPlayer player;
 
     public static RecipeDetailFragment newInstance(int recipeId, int stepId) {
 
@@ -62,7 +64,7 @@ public class RecipeDetailFragment extends BaseFragment {
         viewModel.stepLiveData.observe(this, stepWrapper -> {
             playerView.setVisibility(stepWrapper.hasVideo ? View.VISIBLE : View.GONE);
             if (stepWrapper.hasVideo) {
-                final SimpleExoPlayer player = ExoPlayerFactory.newSimpleInstance(getContext());
+                player = ExoPlayerFactory.newSimpleInstance(getContext());
                 final DataSource.Factory dataSourceFactory =
                         new DefaultDataSourceFactory(getContext(), Util.getUserAgent(getContext(), "udacity-baking-app"));
                 final MediaSource videoSource =
@@ -88,5 +90,15 @@ public class RecipeDetailFragment extends BaseFragment {
         super.onViewCreated(view, savedInstanceState);
         final Bundle bundle = getArguments();
         viewModel.loadStep(bundle.getInt(KEY_RECIPE_ID), bundle.getInt(KEY_STEP_ID));
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        if (player != null) {
+            player.release();
+            playerView.setPlayer(null);
+            Timber.d("release player");
+        }
     }
 }

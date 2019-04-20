@@ -10,6 +10,7 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentPagerAdapter;
+import androidx.fragment.app.FragmentStatePagerAdapter;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.viewpager.widget.ViewPager;
 
@@ -34,6 +35,7 @@ public class RecipeAllDetailFragment extends BaseFragment {
     TabLayout tabLayout;
 
     private PagerAdapter pagerAdapter;
+    private RecipeAllDetailViewModel viewModel;
 
     public static RecipeAllDetailFragment newInstance(int recipeId) {
 
@@ -49,7 +51,7 @@ public class RecipeAllDetailFragment extends BaseFragment {
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        RecipeAllDetailViewModel viewModel = ViewModelProviders.of(this, viewModelFactory)
+        viewModel = ViewModelProviders.of(this, viewModelFactory)
                 .get(RecipeAllDetailViewModel.class);
         viewModel.loadRecipeSteps(getArguments().getInt(KEY_RECIPE_ID));
         viewModel.recipeMutableLiveData.observe(this, recipe -> pagerAdapter.setData(recipe.id, Arrays.asList(recipe.steps)));
@@ -69,7 +71,7 @@ public class RecipeAllDetailFragment extends BaseFragment {
         tabLayout.setupWithViewPager(viewPager);
     }
 
-    static class PagerAdapter extends FragmentPagerAdapter {
+    static class PagerAdapter extends FragmentStatePagerAdapter {
         private int recipeId;
         private final List<Step> steps = new ArrayList<>();
 
@@ -90,7 +92,7 @@ public class RecipeAllDetailFragment extends BaseFragment {
         @Nullable
         @Override
         public CharSequence getPageTitle(int position) {
-            return "Step " + position + 1;
+            return "Step " + position;
         }
 
         void setData(int recipeId, List<Step> steps) {
