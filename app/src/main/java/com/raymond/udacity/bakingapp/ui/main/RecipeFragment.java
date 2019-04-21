@@ -47,13 +47,8 @@ public class RecipeFragment extends BaseFragment {
         viewModel.recipeLiveData.observe(this, recipes -> adapter.setRecipes(recipes));
         viewModel.recipeBundleClickLiveData.observe(this, masterDetailBundlePair -> {
             Timber.d("recipe=" + masterDetailBundlePair);
-
-            if (isTwoPane) {
-                goToMasterDetailFragment(RecipeStepListFragment.class, RecipeAllDetailFragment.class,
-                        masterDetailBundlePair.first, masterDetailBundlePair.second);
-            } else {
-                goToFragment(RecipeStepListFragment.class, masterDetailBundlePair.first);
-            }
+            goToMasterDetailFragment(RecipeStepListFragment.class, RecipeAllDetailFragment.class,
+                    masterDetailBundlePair.first, masterDetailBundlePair.second);
 
         });
         adapter = new RecipeAdapter(viewModel.clickListener);

@@ -3,6 +3,8 @@ package com.raymond.udacity.bakingapp;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.FrameLayout;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.widget.Toolbar;
@@ -25,6 +27,9 @@ public class SimpleFragmentHolderActivity extends BaseActivity {
     @BindView(R.id.toolbar)
     Toolbar toolbar;
 
+    @BindView(R.id.fragment_container_detail)
+    @Nullable FrameLayout detailFragmentContainer;
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -41,6 +46,10 @@ public class SimpleFragmentHolderActivity extends BaseActivity {
             instantiateMasterDetailFragment(className, detailClassName, fragmentArgs, detailFragmentArgs);
         } else {
             instantiateFragment(className, fragmentArgs);
+            // On rotation to landscape, but single fragment is inited
+            if (detailFragmentContainer != null) {
+                detailFragmentContainer.setVisibility(View.GONE);
+            }
         }
 
         if (title != null && !title.isEmpty()) {
@@ -65,17 +74,18 @@ public class SimpleFragmentHolderActivity extends BaseActivity {
                                                  final Bundle masterArguments,
                                                  final Bundle detailArguments) {
         try {
-            Fragment masterFragment = (Fragment) Class.forName(masterClassName).newInstance();
-            masterFragment.setArguments(masterArguments);
-
-            Fragment detailFragment = (Fragment) Class.forName(detailClassName).newInstance();
-            detailFragment.setArguments(detailArguments);
-
             final FragmentManager fm = getSupportFragmentManager();
             final FragmentTransaction transaction = fm.beginTransaction();
 
+            Fragment masterFragment = (Fragment) Class.forName(masterClassName).newInstance();
+            masterFragment.setArguments(masterArguments);
             transaction.replace(R.id.fragment_container, masterFragment);
-            transaction.replace(R.id.fragment_container_detail, detailFragment);
+
+            if (detailFragmentContainer != null) {
+                Fragment detailFragment = (Fragment) Class.forName(detailClassName).newInstance();
+                detailFragment.setArguments(detailArguments);
+                transaction.replace(R.id.fragment_container_detail, detailFragment);
+            }
 
             transaction.commit();
         } catch (ClassCastException e1) {
