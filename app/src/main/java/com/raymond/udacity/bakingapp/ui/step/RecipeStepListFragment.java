@@ -15,10 +15,11 @@ import com.raymond.udacity.bakingapp.R;
 import com.raymond.udacity.bakingapp.ui.BaseFragment;
 
 import butterknife.BindView;
-import butterknife.ButterKnife;
 
 
 public class RecipeStepListFragment extends BaseFragment {
+
+    public static final String KEY_RECIPE_ID = "recipe_id";
 
     @BindView(R.id.recycler_view)
     RecyclerView recyclerView;
@@ -49,6 +50,6 @@ public class RecipeStepListFragment extends BaseFragment {
         recyclerView.setAdapter(adapter);
         recyclerView.setLayoutManager(layoutManager);
 
-        viewModel.loadRecipeSteps(1);
+        viewModel.loadRecipeSteps(getArguments().getInt(KEY_RECIPE_ID, 1));
     }
 }

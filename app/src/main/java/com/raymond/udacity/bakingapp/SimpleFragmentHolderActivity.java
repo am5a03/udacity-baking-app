@@ -1,0 +1,75 @@
+package com.raymond.udacity.bakingapp;
+
+import android.content.Intent;
+import android.os.Bundle;
+import android.view.MenuItem;
+
+import androidx.annotation.Nullable;
+import androidx.appcompat.widget.Toolbar;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
+
+import butterknife.BindView;
+import timber.log.Timber;
+
+public class SimpleFragmentHolderActivity extends BaseActivity {
+    public static final String KEY_FRAGMENT_CLASS = "fragment_class";
+    public static final String KEY_FRAGMENT_ARGS = "fragment_args";
+    public static final String KEY_TITLE = "title";
+    public static final String KEY_DISPLAY_HOME_AS_UP_ENABLED = "display_home_as_up";
+
+    @BindView(R.id.toolbar)
+    Toolbar toolbar;
+
+    @Override
+    protected void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_simple_fragment_holder);
+
+        final Intent intent = getIntent();
+        final String className = intent.getStringExtra(KEY_FRAGMENT_CLASS);
+        final Bundle fragmentArgs = intent.getBundleExtra(KEY_FRAGMENT_ARGS);
+        final String title = fragmentArgs.getString(KEY_TITLE);
+
+        instantiateFragment(className, fragmentArgs);
+
+        if (title != null && !title.isEmpty()) {
+            toolbar.setTitle(title);
+        }
+
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(intent.getBooleanExtra(KEY_DISPLAY_HOME_AS_UP_ENABLED, false));
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if (item.getItemId() == android.R.id.home) {
+            onBackPressed();
+            return true;
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
+    private void instantiateFragment(final String className,
+                                     final Bundle arguments) {
+        try {
+            Fragment fragment = (Fragment) Class.forName(className).newInstance();
+            fragment.setArguments(arguments);
+
+            final FragmentManager fm = getSupportFragmentManager();
+            final FragmentTransaction transaction = fm.beginTransaction();
+            transaction.replace(R.id.fragment_container, fragment);
+            transaction.commit();
+        } catch (ClassCastException e1) {
+            Timber.e(e1);
+        } catch (IllegalAccessException e) {
+            Timber.e(e);
+        } catch (InstantiationException e) {
+            Timber.e(e);
+        } catch (ClassNotFoundException e) {
+            Timber.e(e);
+        }
+
+    }
+}

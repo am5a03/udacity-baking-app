@@ -8,13 +8,16 @@ import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.raymond.udacity.bakingapp.R;
+import com.raymond.udacity.bakingapp.SimpleFragmentHolderActivity;
 import com.raymond.udacity.bakingapp.ui.BaseFragment;
+import com.raymond.udacity.bakingapp.ui.step.RecipeStepListFragment;
 
 import butterknife.BindView;
 import timber.log.Timber;
@@ -43,6 +46,12 @@ public class RecipeFragment extends BaseFragment {
         viewModel.recipeLiveData.observe(this, recipes -> adapter.setRecipes(recipes));
         viewModel.recipeClickLiveData.observe(this, recipe -> {
             Timber.d("recipe=" + recipe);
+            final Bundle args = new Bundle();
+            args.putInt(RecipeStepListFragment.KEY_RECIPE_ID, recipe.id);
+            args.putBoolean(SimpleFragmentHolderActivity.KEY_DISPLAY_HOME_AS_UP_ENABLED, true);
+            args.putString(SimpleFragmentHolderActivity.KEY_TITLE, recipe.name);
+            goToFragment(RecipeStepListFragment.class, args);
+
         });
         adapter = new RecipeAdapter(viewModel.clickListener);
     }
@@ -60,7 +69,7 @@ public class RecipeFragment extends BaseFragment {
         if (getActivity().getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE) {
             layoutManager = new GridLayoutManager(view.getContext(), 2);
         } else {
-            layoutManager = new LinearLayoutManager(view.getContext());
+            layoutManager = new GridLayoutManager(view.getContext(), 1);
         }
 
         recyclerView.setAdapter(adapter);
