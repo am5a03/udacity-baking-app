@@ -1,0 +1,4 @@
+<resources>
+    <item name="is_twopane" type="bool">true</item>
+    <item name="is_phone" type="bool">false</item>
+</resources>
