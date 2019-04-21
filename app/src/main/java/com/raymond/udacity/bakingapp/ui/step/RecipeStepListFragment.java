@@ -13,6 +13,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.raymond.udacity.bakingapp.R;
 import com.raymond.udacity.bakingapp.ui.BaseFragment;
+import com.raymond.udacity.bakingapp.ui.detail.RecipeAllDetailFragment;
 
 import butterknife.BindView;
 
@@ -31,10 +32,13 @@ public class RecipeStepListFragment extends BaseFragment {
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        adapter = new RecipeStepListAdapter();
         viewModel = ViewModelProviders.of(this, viewModelFactory)
                 .get(RecipeStepListViewModel.class);
         viewModel.recipeLiveData.observe(this, recipe -> adapter.setData(recipe));
+        viewModel.stepClickLiveData.observe(this, stepBundle -> {
+            goToFragment(RecipeAllDetailFragment.class, stepBundle);
+        });
+        adapter = new RecipeStepListAdapter(viewModel.stepClickListener);
     }
 
     @Nullable

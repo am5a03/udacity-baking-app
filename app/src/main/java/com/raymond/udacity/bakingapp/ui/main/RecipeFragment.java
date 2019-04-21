@@ -8,10 +8,8 @@ import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.GridLayoutManager;
-import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.raymond.udacity.bakingapp.R;
@@ -44,13 +42,9 @@ public class RecipeFragment extends BaseFragment {
         super.onCreate(savedInstanceState);
         viewModel = ViewModelProviders.of(this, viewModelFactory).get(RecipeViewModel.class);
         viewModel.recipeLiveData.observe(this, recipes -> adapter.setRecipes(recipes));
-        viewModel.recipeClickLiveData.observe(this, recipe -> {
-            Timber.d("recipe=" + recipe);
-            final Bundle args = new Bundle();
-            args.putInt(RecipeStepListFragment.KEY_RECIPE_ID, recipe.id);
-            args.putBoolean(SimpleFragmentHolderActivity.KEY_DISPLAY_HOME_AS_UP_ENABLED, true);
-            args.putString(SimpleFragmentHolderActivity.KEY_TITLE, recipe.name);
-            goToFragment(RecipeStepListFragment.class, args);
+        viewModel.recipeBundleClickLiveData.observe(this, bundle -> {
+            Timber.d("recipe=" + bundle);
+            goToFragment(RecipeStepListFragment.class, bundle);
 
         });
         adapter = new RecipeAdapter(viewModel.clickListener);

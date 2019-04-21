@@ -26,6 +26,11 @@ public class RecipeStepListAdapter extends RecyclerView.Adapter {
     private Recipe recipe;
     private final List<Step> steps = new ArrayList<>();
     private final List<Ingredient> ingredients = new ArrayList<>();
+    private final View.OnClickListener clickListener;
+
+    RecipeStepListAdapter(final View.OnClickListener clickListener) {
+        this.clickListener = clickListener;
+    }
 
     @NonNull
     @Override
@@ -64,7 +69,11 @@ public class RecipeStepListAdapter extends RecyclerView.Adapter {
             }
             final Step step = steps.get(offset);
             ((VH) holder).step.setText((offset + 1) + ". " + step.shortDescription);
+            ((VH) holder).step.setTag(step);
+            ((VH) holder).step.setOnClickListener(clickListener);
+
             ((VH) holder).itemView.setTag(step);
+            ((VH) holder).itemView.setOnClickListener(clickListener);
         }
     }
 

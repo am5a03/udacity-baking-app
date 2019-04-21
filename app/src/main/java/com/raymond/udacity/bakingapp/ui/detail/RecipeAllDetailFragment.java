@@ -27,6 +27,7 @@ import butterknife.BindView;
 
 public class RecipeAllDetailFragment extends BaseFragment {
     public static final String KEY_RECIPE_ID = "recipe_id";
+    public static final String KEY_STEP_ID = "step_id";
 
     @BindView(R.id.view_pager)
     ViewPager viewPager;
@@ -54,7 +55,10 @@ public class RecipeAllDetailFragment extends BaseFragment {
         viewModel = ViewModelProviders.of(this, viewModelFactory)
                 .get(RecipeAllDetailViewModel.class);
         viewModel.loadRecipeSteps(getArguments().getInt(KEY_RECIPE_ID));
-        viewModel.recipeMutableLiveData.observe(this, recipe -> pagerAdapter.setData(recipe.id, Arrays.asList(recipe.steps)));
+        viewModel.recipeMutableLiveData.observe(this, recipe -> {
+            pagerAdapter.setData(recipe.id, Arrays.asList(recipe.steps));
+            viewPager.setCurrentItem(getArguments().getInt(KEY_STEP_ID));
+        });
     }
 
     @Nullable
