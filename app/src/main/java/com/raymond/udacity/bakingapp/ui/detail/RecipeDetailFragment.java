@@ -1,10 +1,15 @@
 package com.raymond.udacity.bakingapp.ui.detail;
 
+import android.app.Dialog;
+import android.content.pm.ActivityInfo;
+import android.content.res.Configuration;
 import android.net.Uri;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.FrameLayout;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -43,6 +48,9 @@ public class RecipeDetailFragment extends BaseFragment {
 
     private RecipeDetailViewModel viewModel;
     @Nullable private SimpleExoPlayer player;
+
+    Dialog fullscreenDialog;
+    private boolean isExoPlayerFullscreen;
 
     public static RecipeDetailFragment newInstance(int recipeId, int stepId) {
 
@@ -90,15 +98,45 @@ public class RecipeDetailFragment extends BaseFragment {
         super.onViewCreated(view, savedInstanceState);
         final Bundle bundle = getArguments();
         viewModel.loadStep(bundle.getInt(KEY_RECIPE_ID), bundle.getInt(KEY_STEP_ID));
+
+        fullscreenDialog = new Dialog(getContext(), android.R.style.Theme_Black_NoTitleBar_Fullscreen) {
+            @Override
+            public void onBackPressed() {
+                if (isExoPlayerFullscreen) {
+                    closeFullscreenDialog();
+                }
+                super.onBackPressed();
+            }
+        };
+
+        if (!getResources().getBoolean(R.bool.is_twopane) && getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE) {
+            openFullscreenDialog();
+        }
     }
 
     @Override
     public void onDestroy() {
         super.onDestroy();
+//        closeFullscreenDialog();
         if (player != null) {
             player.release();
             playerView.setPlayer(null);
             Timber.d("release player");
         }
+    }
+
+    private void closeFullscreenDialog() {
+        if (!getResources().getBoolean(R.bool.is_twopane)) {
+            isExoPlayerFullscreen = false;
+            fullscreenDialog.dismiss();
+            getBaseActivity().setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+        }
+    }
+
+    private void openFullscreenDialog() {
+        ((ViewGroup) playerView.getParent()).removeView(playerView);
+        fullscreenDialog.addContentView(playerView, new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
+        isExoPlayerFullscreen = true;
+        fullscreenDialog.show();
     }
 }

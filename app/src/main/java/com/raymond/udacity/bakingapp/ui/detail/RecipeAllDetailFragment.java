@@ -1,5 +1,6 @@
 package com.raymond.udacity.bakingapp.ui.detail;
 
+import android.app.Dialog;
 import android.content.res.Configuration;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -40,6 +41,8 @@ public class RecipeAllDetailFragment extends BaseFragment {
     private PagerAdapter pagerAdapter;
     private RecipeAllDetailViewModel viewModel;
 
+
+
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -68,16 +71,6 @@ public class RecipeAllDetailFragment extends BaseFragment {
         viewPager.setAdapter(pagerAdapter);
         tabLayout.setupWithViewPager(viewPager);
         tabLayout.addOnTabSelectedListener(viewModel.tablayoutOnClickListener);
-
-        if (getBaseActivity().getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE) {
-            if (!getResources().getBoolean(R.bool.is_twopane)) {
-                tabLayout.setVisibility(View.GONE);
-                getActivity().findViewById(R.id.toolbar).setVisibility(View.GONE);
-                getActivity().getWindow().addFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN);
-            }
-        } else {
-            getActivity().getWindow().clearFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN);
-        }
     }
 
     @Override
@@ -91,6 +84,8 @@ public class RecipeAllDetailFragment extends BaseFragment {
         super.onViewStateRestored(savedInstanceState);
         viewModel.restoreInstanecState(savedInstanceState);
     }
+
+
 
     static class PagerAdapter extends FragmentStatePagerAdapter {
         private int recipeId;
