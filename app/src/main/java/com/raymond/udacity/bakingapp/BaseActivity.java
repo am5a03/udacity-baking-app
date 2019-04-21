@@ -29,6 +29,22 @@ public abstract class BaseActivity extends DaggerAppCompatActivity {
         startActivity(intent);
     }
 
+    public <MASTER extends Fragment, DETAIL extends Fragment> void goToMasterDetailFragment(final Class<MASTER> masterClazz,
+                                                                                            final Class<DETAIL> detailClazz,
+                                                                                            final Bundle masterBundle,
+                                                                                            final Bundle detailBundle) {
+        final Intent intent = new Intent(this, SimpleFragmentHolderActivity.class);
+        intent.putExtra(SimpleFragmentHolderActivity.KEY_FRAGMENT_CLASS, masterClazz.getName());
+        intent.putExtra(SimpleFragmentHolderActivity.KEY_FRAGMENT_DETAIL_CLASS, detailClazz.getName());
+        intent.putExtra(SimpleFragmentHolderActivity.KEY_FRAGMENT_ARGS, masterBundle);
+        intent.putExtra(SimpleFragmentHolderActivity.KEY_FRAGMENT_DETAIL_ARGS, detailBundle);
+
+        intent.putExtra(SimpleFragmentHolderActivity.KEY_TITLE, masterBundle.getString(SimpleFragmentHolderActivity.KEY_TITLE));
+        intent.putExtra(SimpleFragmentHolderActivity.KEY_DISPLAY_HOME_AS_UP_ENABLED, masterBundle.getBoolean(SimpleFragmentHolderActivity.KEY_DISPLAY_HOME_AS_UP_ENABLED));
+        startActivity(intent);
+
+    }
+
     @Override
     public void setContentView(int layoutResID) {
         super.setContentView(layoutResID);

@@ -40,17 +40,6 @@ public class RecipeAllDetailFragment extends BaseFragment {
     private PagerAdapter pagerAdapter;
     private RecipeAllDetailViewModel viewModel;
 
-    public static RecipeAllDetailFragment newInstance(int recipeId) {
-
-        Bundle args = new Bundle();
-
-        args.putInt(KEY_RECIPE_ID, recipeId);
-
-        RecipeAllDetailFragment fragment = new RecipeAllDetailFragment();
-        fragment.setArguments(args);
-        return fragment;
-    }
-
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -81,9 +70,11 @@ public class RecipeAllDetailFragment extends BaseFragment {
         tabLayout.addOnTabSelectedListener(viewModel.tablayoutOnClickListener);
 
         if (getBaseActivity().getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE) {
-            tabLayout.setVisibility(View.GONE);
-            getActivity().findViewById(R.id.toolbar).setVisibility(View.GONE);
-            getActivity().getWindow().addFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN);
+            if (!getResources().getBoolean(R.bool.is_twopane)) {
+                tabLayout.setVisibility(View.GONE);
+                getActivity().findViewById(R.id.toolbar).setVisibility(View.GONE);
+                getActivity().getWindow().addFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN);
+            }
         } else {
             getActivity().getWindow().clearFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN);
         }

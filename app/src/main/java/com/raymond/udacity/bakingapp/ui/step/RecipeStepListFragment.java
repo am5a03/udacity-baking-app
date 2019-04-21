@@ -27,11 +27,13 @@ public class RecipeStepListFragment extends BaseFragment {
     private RecipeStepListAdapter adapter;
     private RecipeStepListViewModel viewModel;
     private RecyclerView.LayoutManager layoutManager;
+    private boolean isTwoPane;
 
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        isTwoPane = getResources().getBoolean(R.bool.is_twopane);
         viewModel = ViewModelProviders.of(this, viewModelFactory)
                 .get(RecipeStepListViewModel.class);
         viewModel.recipeLiveData.observe(this, recipe -> adapter.setData(recipe));

@@ -5,4 +5,7 @@
     <dimen name="material_medium">8dp</dimen>
     <dimen name="material_large">16dp</dimen>
     <dimen name="material_xlarge">32dp</dimen>
+
+    <item name="is_twopane" type="bool">false</item>
+    <item name="is_phone" type="bool">true</item>
 </resources>

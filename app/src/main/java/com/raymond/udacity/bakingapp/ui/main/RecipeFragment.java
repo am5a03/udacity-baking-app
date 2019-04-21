@@ -15,6 +15,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.raymond.udacity.bakingapp.R;
 import com.raymond.udacity.bakingapp.SimpleFragmentHolderActivity;
 import com.raymond.udacity.bakingapp.ui.BaseFragment;
+import com.raymond.udacity.bakingapp.ui.detail.RecipeAllDetailFragment;
 import com.raymond.udacity.bakingapp.ui.step.RecipeStepListFragment;
 
 import butterknife.BindView;
@@ -27,6 +28,7 @@ public class RecipeFragment extends BaseFragment {
     private RecipeAdapter adapter;
     private RecyclerView.LayoutManager layoutManager;
     private RecipeViewModel viewModel;
+    private boolean isTwoPane;
 
     public static RecipeFragment newInstance() {
 
@@ -40,11 +42,18 @@ public class RecipeFragment extends BaseFragment {
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        isTwoPane = getResources().getBoolean(R.bool.is_twopane);
         viewModel = ViewModelProviders.of(this, viewModelFactory).get(RecipeViewModel.class);
         viewModel.recipeLiveData.observe(this, recipes -> adapter.setRecipes(recipes));
-        viewModel.recipeBundleClickLiveData.observe(this, bundle -> {
-            Timber.d("recipe=" + bundle);
-            goToFragment(RecipeStepListFragment.class, bundle);
+        viewModel.recipeBundleClickLiveData.observe(this, masterDetailBundlePair -> {
+            Timber.d("recipe=" + masterDetailBundlePair);
+
+            if (isTwoPane) {
+                goToMasterDetailFragment(RecipeStepListFragment.class, RecipeAllDetailFragment.class,
+                        masterDetailBundlePair.first, masterDetailBundlePair.second);
+            } else {
+                goToFragment(RecipeStepListFragment.class, masterDetailBundlePair.first);
+            }
 
         });
         adapter = new RecipeAdapter(viewModel.clickListener);

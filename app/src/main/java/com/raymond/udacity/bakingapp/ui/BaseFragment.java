@@ -32,4 +32,11 @@ public abstract class BaseFragment extends DaggerFragment {
     protected <T extends Fragment> void goToFragment(final Class<T> fragmentClazz, final Bundle arguments) {
         getBaseActivity().goToFragment(fragmentClazz, arguments);
     }
+
+    protected <MASTER extends Fragment, DETAIL extends Fragment> void goToMasterDetailFragment(final Class<MASTER> masterClazz,
+                                                                                               final Class<DETAIL> detailClazz,
+                                                                                               final Bundle masterBundle,
+                                                                                               final Bundle detailBundle) {
+        getBaseActivity().goToMasterDetailFragment(masterClazz, detailClazz, masterBundle, detailBundle);
+    }
 }
