@@ -92,7 +92,7 @@ public class RecipeAllDetailFragment extends BaseFragment {
         @Nullable
         @Override
         public CharSequence getPageTitle(int position) {
-            return "Step " + position;
+            return String.valueOf(position);
         }
 
         void setData(int recipeId, List<Step> steps) {

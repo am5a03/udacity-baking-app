@@ -6,28 +6,14 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
-import androidx.lifecycle.ViewModelProvider;
 
-import com.raymond.udacity.bakingapp.repository.RecipeRepository;
 import com.raymond.udacity.bakingapp.ui.detail.RecipeAllDetailFragment;
-import com.raymond.udacity.bakingapp.ui.detail.RecipeAllDetailViewModel;
-import com.raymond.udacity.bakingapp.ui.detail.RecipeDetailFragment;
-import com.raymond.udacity.bakingapp.ui.step.RecipeStepListFragment;
-
-import javax.inject.Inject;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import dagger.android.support.DaggerAppCompatActivity;
 import timber.log.Timber;
 
-public class MainActivity extends DaggerAppCompatActivity {
-
-    @Inject
-    ViewModelProvider.Factory viewModelFactory;
-
-    @Inject
-    RecipeRepository recipeRepository;
+public class MainActivity extends BaseActivity {
 
     @BindView(R.id.toolbar)
     Toolbar toolbar;

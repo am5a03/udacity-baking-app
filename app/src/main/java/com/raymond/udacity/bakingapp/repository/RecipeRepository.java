@@ -12,7 +12,6 @@ import com.raymond.udacity.bakingapp.models.db.Recipe;
 import com.raymond.udacity.bakingapp.models.db.Step;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -20,7 +19,7 @@ import javax.inject.Inject;
 
 import io.reactivex.Single;
 
-public class RecipeRepository {
+public class RecipeRepository implements RecipeRepositoryInterface {
 
     private ApiService apiService;
     private AppDatabase database;
@@ -34,9 +33,9 @@ public class RecipeRepository {
     private final SparseArrayCompat<Map<Integer, Step>> recipeStepMap = new SparseArrayCompat<>();
 
     @Inject
-    public RecipeRepository(ApiService apiService,
-                            AppDatabase database,
-                            SharedPreferences defaultSharedPref) {
+    public RecipeRepository(final ApiService apiService,
+                            final AppDatabase database,
+                            final SharedPreferences defaultSharedPref) {
         this.apiService = apiService;
         this.database = database;
         this.sharedPref = defaultSharedPref;
@@ -48,6 +47,7 @@ public class RecipeRepository {
      *
      * @return
      */
+    @Override
     public Single<List<Recipe>> getAllRecipes() {
         return Single.just(database)
                 .map(database -> database.getRecipeDao().getAll())
@@ -67,6 +67,7 @@ public class RecipeRepository {
      * @param id
      * @return
      */
+    @Override
     public Single<Recipe> getRecipeById(int id) {
         return Single.just(database)
                 .map(database1 -> {
@@ -85,6 +86,7 @@ public class RecipeRepository {
      * @param stepId
      * @return
      */
+    @Override
     public Single<Step> getStepByRecipe(int recipeId, int stepId) {
         synchronized (recipeStepMap) {
             if (recipeStepMap.containsKey(recipeId) &&
@@ -118,6 +120,7 @@ public class RecipeRepository {
      * @param stepId
      * @return
      */
+    @Override
     public Single<Step> getStepByRecipe(final Recipe recipe, final int stepId) {
         return getStepByRecipe(recipe.id, stepId);
     }
