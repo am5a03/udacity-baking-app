@@ -1,9 +1,11 @@
 package com.raymond.udacity.bakingapp.ui.detail;
 
+import android.content.res.Configuration;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -59,6 +61,9 @@ public class RecipeAllDetailFragment extends BaseFragment {
             pagerAdapter.setData(recipe.id, Arrays.asList(recipe.steps));
             viewPager.setCurrentItem(getArguments().getInt(KEY_STEP_ID));
         });
+        viewModel.selectViewPagerItemLiveData.observe(this, position -> {
+            viewPager.setCurrentItem(position);
+        });
     }
 
     @Nullable
@@ -73,6 +78,27 @@ public class RecipeAllDetailFragment extends BaseFragment {
         pagerAdapter = new PagerAdapter(getFragmentManager());
         viewPager.setAdapter(pagerAdapter);
         tabLayout.setupWithViewPager(viewPager);
+        tabLayout.addOnTabSelectedListener(viewModel.tablayoutOnClickListener);
+
+        if (getBaseActivity().getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE) {
+            tabLayout.setVisibility(View.GONE);
+            getActivity().findViewById(R.id.toolbar).setVisibility(View.GONE);
+            getActivity().getWindow().addFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN);
+        } else {
+            getActivity().getWindow().clearFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN);
+        }
+    }
+
+    @Override
+    public void onSaveInstanceState(@NonNull Bundle outState) {
+        super.onSaveInstanceState(outState);
+        viewModel.saveInstanceState(outState);
+    }
+
+    @Override
+    public void onViewStateRestored(@Nullable Bundle savedInstanceState) {
+        super.onViewStateRestored(savedInstanceState);
+        viewModel.restoreInstanecState(savedInstanceState);
     }
 
     static class PagerAdapter extends FragmentStatePagerAdapter {
