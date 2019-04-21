@@ -1,5 +1,6 @@
 package com.raymond.udacity.bakingapp.ui.main;
 
+import android.content.res.Configuration;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -7,21 +8,15 @@ import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
+import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.raymond.udacity.bakingapp.R;
-
 import com.raymond.udacity.bakingapp.ui.BaseFragment;
 
-import java.util.List;
-
-import javax.inject.Inject;
-
 import butterknife.BindView;
-import butterknife.ButterKnife;
 import timber.log.Timber;
 
 public class RecipeFragment extends BaseFragment {
@@ -31,6 +26,15 @@ public class RecipeFragment extends BaseFragment {
     private RecipeAdapter adapter;
     private RecyclerView.LayoutManager layoutManager;
     private RecipeViewModel viewModel;
+
+    public static RecipeFragment newInstance() {
+
+        Bundle args = new Bundle();
+
+        RecipeFragment fragment = new RecipeFragment();
+        fragment.setArguments(args);
+        return fragment;
+    }
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -52,7 +56,13 @@ public class RecipeFragment extends BaseFragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        layoutManager = new LinearLayoutManager(view.getContext());
+
+        if (getActivity().getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE) {
+            layoutManager = new GridLayoutManager(view.getContext(), 2);
+        } else {
+            layoutManager = new LinearLayoutManager(view.getContext());
+        }
+
         recyclerView.setAdapter(adapter);
         recyclerView.setLayoutManager(layoutManager);
         viewModel.loadRecipe();

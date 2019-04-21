@@ -8,6 +8,7 @@ import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
 import com.raymond.udacity.bakingapp.ui.detail.RecipeAllDetailFragment;
+import com.raymond.udacity.bakingapp.ui.main.RecipeFragment;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -25,7 +26,7 @@ public class MainActivity extends BaseActivity {
         ButterKnife.bind(this);
         setSupportActionBar(toolbar);
 
-        initFragment(RecipeAllDetailFragment.newInstance(2));
+        initFragment(RecipeFragment.newInstance());
     }
 
     private void initFragment(Fragment fragment) {
