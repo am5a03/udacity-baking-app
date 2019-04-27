@@ -80,7 +80,8 @@ public class SimpleFragmentHolderActivity extends BaseActivity {
             toolbar.setTitle(title);
         }
 
-        if (supportLandscapeFullScreenMode) {
+        // Double check to make sure it's not two pane mode
+        if (supportLandscapeFullScreenMode && !getResources().getBoolean(R.bool.is_twopane)) {
             final int orientation = getResources().getConfiguration().orientation;
             if (orientation == Configuration.ORIENTATION_LANDSCAPE) {
                 hideSystemUI();

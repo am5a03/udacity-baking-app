@@ -40,9 +40,14 @@ public class RecipeStepListFragment extends BaseFragment {
                 .get(RecipeStepListViewModel.class);
         viewModel.recipeLiveData.observe(this, recipe -> adapter.setData(recipe));
         viewModel.stepClickLiveData.observe(this, stepBundle -> {
-            stepBundle.putBoolean(SimpleFragmentHolderActivity.KEY_SUPPORT_LANDSCAPE_FULL_SCREEN_MODE,
+            stepBundle.putBoolean(
+                    SimpleFragmentHolderActivity.KEY_SUPPORT_LANDSCAPE_FULL_SCREEN_MODE,
                     !isTwoPane);
-            goToFragment(RecipeAllDetailFragment.class, stepBundle);
+            if (isTwoPane) {
+
+            } else {
+                goToFragment(RecipeAllDetailFragment.class, stepBundle);
+            }
         });
         adapter = new RecipeStepListAdapter(viewModel.stepClickListener);
     }
