@@ -1,5 +1,6 @@
 package com.raymond.udacity.bakingapp.ui.step;
 
+import android.content.res.Configuration;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -12,6 +13,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.raymond.udacity.bakingapp.R;
+import com.raymond.udacity.bakingapp.SimpleFragmentHolderActivity;
 import com.raymond.udacity.bakingapp.ui.BaseFragment;
 import com.raymond.udacity.bakingapp.ui.detail.RecipeAllDetailFragment;
 
@@ -38,6 +40,8 @@ public class RecipeStepListFragment extends BaseFragment {
                 .get(RecipeStepListViewModel.class);
         viewModel.recipeLiveData.observe(this, recipe -> adapter.setData(recipe));
         viewModel.stepClickLiveData.observe(this, stepBundle -> {
+            stepBundle.putBoolean(SimpleFragmentHolderActivity.KEY_SUPPORT_LANDSCAPE_FULL_SCREEN_MODE,
+                    !isTwoPane);
             goToFragment(RecipeAllDetailFragment.class, stepBundle);
         });
         adapter = new RecipeStepListAdapter(viewModel.stepClickListener);

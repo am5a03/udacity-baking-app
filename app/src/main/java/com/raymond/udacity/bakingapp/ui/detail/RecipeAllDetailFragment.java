@@ -1,18 +1,15 @@
 package com.raymond.udacity.bakingapp.ui.detail;
 
-import android.app.Dialog;
 import android.content.res.Configuration;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.WindowManager;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
-import androidx.fragment.app.FragmentPagerAdapter;
 import androidx.fragment.app.FragmentStatePagerAdapter;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.viewpager.widget.ViewPager;
@@ -40,12 +37,18 @@ public class RecipeAllDetailFragment extends BaseFragment {
 
     private PagerAdapter pagerAdapter;
     private RecipeAllDetailViewModel viewModel;
+    private boolean isTwoPane;
 
 
+    @Override
+    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+    }
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        isTwoPane = getResources().getBoolean(R.bool.is_twopane);
         viewModel = ViewModelProviders.of(this, viewModelFactory)
                 .get(RecipeAllDetailViewModel.class);
         viewModel.loadRecipeSteps(getArguments().getInt(KEY_RECIPE_ID));
@@ -71,6 +74,15 @@ public class RecipeAllDetailFragment extends BaseFragment {
         viewPager.setAdapter(pagerAdapter);
         tabLayout.setupWithViewPager(viewPager);
         tabLayout.addOnTabSelectedListener(viewModel.tablayoutOnClickListener);
+
+        if (!isTwoPane) {
+            final int orientation = getResources().getConfiguration().orientation;
+            if (orientation == Configuration.ORIENTATION_LANDSCAPE) {
+                tabLayout.setVisibility(View.GONE);
+                getActivity().findViewById(R.id.toolbar).setVisibility(View.GONE);
+            }
+        }
+
     }
 
     @Override

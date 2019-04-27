@@ -1,9 +1,12 @@
 package com.raymond.udacity.bakingapp;
 
 import android.content.Intent;
+import android.content.res.Configuration;
 import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.Window;
+import android.view.WindowManager;
 import android.widget.FrameLayout;
 
 import androidx.annotation.Nullable;
@@ -20,6 +23,7 @@ public class SimpleFragmentHolderActivity extends BaseActivity {
     public static final String KEY_FRAGMENT_ARGS = "fragment_args";
     public static final String KEY_TITLE = "title";
     public static final String KEY_DISPLAY_HOME_AS_UP_ENABLED = "display_home_as_up";
+    public static final String KEY_SUPPORT_LANDSCAPE_FULL_SCREEN_MODE = "support_landscape_fullscreen";
 
     public static final String KEY_FRAGMENT_DETAIL_CLASS = "fragment_detail_class";
     public static final String KEY_FRAGMENT_DETAIL_ARGS = "fragment_detail_args";
@@ -29,6 +33,25 @@ public class SimpleFragmentHolderActivity extends BaseActivity {
 
     @BindView(R.id.fragment_container_detail)
     @Nullable FrameLayout detailFragmentContainer;
+
+
+    private void hideSystemUI() {
+        // Enables regular immersive mode.
+        // For "lean back" mode, remove SYSTEM_UI_FLAG_IMMERSIVE.
+        // Or for "sticky immersive," replace it with SYSTEM_UI_FLAG_IMMERSIVE_STICKY
+        View decorView = getWindow().getDecorView();
+        decorView.setSystemUiVisibility(
+                View.SYSTEM_UI_FLAG_IMMERSIVE
+                        // Set the content to appear under the system bars so that the
+                        // content doesn't resize when the system bars hide and show.
+                        | View.SYSTEM_UI_FLAG_LAYOUT_STABLE
+                        | View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
+                        | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
+                        // Hide the nav bar and status bar
+                        | View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
+                        | View.SYSTEM_UI_FLAG_FULLSCREEN);
+    }
+
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -41,6 +64,7 @@ public class SimpleFragmentHolderActivity extends BaseActivity {
         final Bundle fragmentArgs = intent.getBundleExtra(KEY_FRAGMENT_ARGS);
         final Bundle detailFragmentArgs = intent.getBundleExtra(KEY_FRAGMENT_DETAIL_ARGS);
         final String title = fragmentArgs.getString(KEY_TITLE);
+        final boolean supportLandscapeFullScreenMode = intent.getBooleanExtra(KEY_SUPPORT_LANDSCAPE_FULL_SCREEN_MODE, false);
 
         if (getResources().getBoolean(R.bool.is_twopane) && detailClassName != null && !detailClassName.isEmpty()) {
             instantiateMasterDetailFragment(className, detailClassName, fragmentArgs, detailFragmentArgs);
@@ -54,6 +78,13 @@ public class SimpleFragmentHolderActivity extends BaseActivity {
 
         if (title != null && !title.isEmpty()) {
             toolbar.setTitle(title);
+        }
+
+        if (supportLandscapeFullScreenMode) {
+            final int orientation = getResources().getConfiguration().orientation;
+            if (orientation == Configuration.ORIENTATION_LANDSCAPE) {
+                hideSystemUI();
+            }
         }
 
         setSupportActionBar(toolbar);

@@ -49,10 +49,7 @@ public class RecipeDetailFragment extends BaseFragment {
     private RecipeDetailViewModel viewModel;
     @Nullable private SimpleExoPlayer player;
 
-    Dialog fullscreenDialog;
-    private boolean isExoPlayerFullscreen;
-
-    public static RecipeDetailFragment newInstance(int recipeId, int stepId) {
+    static RecipeDetailFragment newInstance(int recipeId, int stepId) {
 
         Bundle args = new Bundle();
 
@@ -98,45 +95,36 @@ public class RecipeDetailFragment extends BaseFragment {
         super.onViewCreated(view, savedInstanceState);
         final Bundle bundle = getArguments();
         viewModel.loadStep(bundle.getInt(KEY_RECIPE_ID), bundle.getInt(KEY_STEP_ID));
-
-        fullscreenDialog = new Dialog(getContext(), android.R.style.Theme_Black_NoTitleBar_Fullscreen) {
-            @Override
-            public void onBackPressed() {
-                if (isExoPlayerFullscreen) {
-                    closeFullscreenDialog();
-                }
-                super.onBackPressed();
-            }
-        };
-
-        if (!getResources().getBoolean(R.bool.is_twopane) && getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE) {
-            openFullscreenDialog();
-        }
     }
 
     @Override
     public void onDestroy() {
         super.onDestroy();
-//        closeFullscreenDialog();
         if (player != null) {
             player.release();
             playerView.setPlayer(null);
-            Timber.d("release player");
+            player = null;
+            Timber.d("release player this=" + this);
         }
+        Timber.d("destroy this=" + this
+                + " userVisible=" + getUserVisibleHint()
+                + " step_id" + getArguments().getInt(KEY_STEP_ID)
+        );
     }
 
-    private void closeFullscreenDialog() {
-        if (!getResources().getBoolean(R.bool.is_twopane)) {
-            isExoPlayerFullscreen = false;
-            fullscreenDialog.dismiss();
-            getBaseActivity().setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
-        }
+    @Override
+    public void onSaveInstanceState(@NonNull Bundle outState) {
+        super.onSaveInstanceState(outState);
+        Timber.d("this=" + this +
+                "userVisible=" + getUserVisibleHint() +
+                " step_id" + getArguments().getInt(KEY_STEP_ID)
+                );
     }
 
-    private void openFullscreenDialog() {
-        ((ViewGroup) playerView.getParent()).removeView(playerView);
-        fullscreenDialog.addContentView(playerView, new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
-        isExoPlayerFullscreen = true;
-        fullscreenDialog.show();
+    @Override
+    public void onConfigurationChanged(Configuration newConfig) {
+        super.onConfigurationChanged(newConfig);
+        Timber.d("configuration=" + newConfig.orientation + " this=" + this + " visible=" + isVisible());
     }
+
 }

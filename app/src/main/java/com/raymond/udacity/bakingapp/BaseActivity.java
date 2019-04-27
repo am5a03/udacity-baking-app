@@ -26,6 +26,7 @@ public abstract class BaseActivity extends DaggerAppCompatActivity {
         intent.putExtra(SimpleFragmentHolderActivity.KEY_FRAGMENT_ARGS, arguments);
         intent.putExtra(SimpleFragmentHolderActivity.KEY_TITLE, arguments.getString(SimpleFragmentHolderActivity.KEY_TITLE));
         intent.putExtra(SimpleFragmentHolderActivity.KEY_DISPLAY_HOME_AS_UP_ENABLED, arguments.getBoolean(SimpleFragmentHolderActivity.KEY_DISPLAY_HOME_AS_UP_ENABLED));
+        intent.putExtra(SimpleFragmentHolderActivity.KEY_SUPPORT_LANDSCAPE_FULL_SCREEN_MODE, arguments.getBoolean(SimpleFragmentHolderActivity.KEY_SUPPORT_LANDSCAPE_FULL_SCREEN_MODE));
         startActivity(intent);
     }
 
@@ -41,6 +42,7 @@ public abstract class BaseActivity extends DaggerAppCompatActivity {
 
         intent.putExtra(SimpleFragmentHolderActivity.KEY_TITLE, masterBundle.getString(SimpleFragmentHolderActivity.KEY_TITLE));
         intent.putExtra(SimpleFragmentHolderActivity.KEY_DISPLAY_HOME_AS_UP_ENABLED, masterBundle.getBoolean(SimpleFragmentHolderActivity.KEY_DISPLAY_HOME_AS_UP_ENABLED));
+        intent.putExtra(SimpleFragmentHolderActivity.KEY_SUPPORT_LANDSCAPE_FULL_SCREEN_MODE, masterBundle.getBoolean(SimpleFragmentHolderActivity.KEY_SUPPORT_LANDSCAPE_FULL_SCREEN_MODE));
         startActivity(intent);
 
     }
