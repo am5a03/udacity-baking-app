@@ -1,8 +1,5 @@
 package com.raymond.udacity.bakingapp.ui.detail;
 
-import android.os.Bundle;
-
-import androidx.annotation.Nullable;
 import androidx.lifecycle.MutableLiveData;
 
 import com.raymond.udacity.bakingapp.models.db.Step;
@@ -27,14 +24,6 @@ public class RecipeDetailViewModel extends BaseViewModel {
                         .observeOn(AndroidSchedulers.mainThread())
                         .subscribe(stepLiveData::postValue, Timber::e)
         );
-    }
-
-    void saveInstanceState(Bundle outState) {
-
-    }
-
-    void restoreInstanecState(@Nullable Bundle savedInstanceState) {
-
     }
 
     static class StepWrapper {

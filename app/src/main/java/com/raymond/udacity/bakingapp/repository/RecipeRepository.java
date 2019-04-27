@@ -101,7 +101,7 @@ public class RecipeRepository implements RecipeRepositoryInterface {
                                     final ArrayMap<Integer, Step> stepMap = new ArrayMap<>();
 
                                     for (int i = 0; i < recipe1.steps.length; i++) {
-                                        stepMap.put(i, recipe1.steps[i]);
+                                        stepMap.put(recipe1.steps[i].id, recipe1.steps[i]);
                                     }
 
                                     recipeStepMap.put(recipe1.id, stepMap);

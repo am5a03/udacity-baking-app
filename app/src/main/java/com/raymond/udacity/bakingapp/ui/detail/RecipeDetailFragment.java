@@ -1,20 +1,15 @@
 package com.raymond.udacity.bakingapp.ui.detail;
 
-import android.app.Dialog;
-import android.content.pm.ActivityInfo;
 import android.content.res.Configuration;
 import android.net.Uri;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.FrameLayout;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 
 import com.google.android.exoplayer2.ExoPlayerFactory;
@@ -26,7 +21,6 @@ import com.google.android.exoplayer2.upstream.DataSource;
 import com.google.android.exoplayer2.upstream.DefaultDataSourceFactory;
 import com.google.android.exoplayer2.util.Util;
 import com.raymond.udacity.bakingapp.R;
-import com.raymond.udacity.bakingapp.models.db.Step;
 import com.raymond.udacity.bakingapp.ui.BaseFragment;
 
 import butterknife.BindView;
@@ -48,6 +42,7 @@ public class RecipeDetailFragment extends BaseFragment {
 
     private RecipeDetailViewModel viewModel;
     @Nullable private SimpleExoPlayer player;
+
 
     static RecipeDetailFragment newInstance(int recipeId, int stepId) {
 

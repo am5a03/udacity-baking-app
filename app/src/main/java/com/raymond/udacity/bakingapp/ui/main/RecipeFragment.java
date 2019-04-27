@@ -13,7 +13,6 @@ import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.raymond.udacity.bakingapp.R;
-import com.raymond.udacity.bakingapp.SimpleFragmentHolderActivity;
 import com.raymond.udacity.bakingapp.ui.BaseFragment;
 import com.raymond.udacity.bakingapp.ui.detail.RecipeAllDetailFragment;
 import com.raymond.udacity.bakingapp.ui.step.RecipeStepListFragment;

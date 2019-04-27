@@ -68,7 +68,7 @@ public class RecipeStepListAdapter extends RecyclerView.Adapter {
                 ((VH) holder).stepHeadline.setVisibility(View.GONE);
             }
             final Step step = steps.get(offset);
-            ((VH) holder).step.setText((offset + 1) + ". " + step.shortDescription);
+            ((VH) holder).step.setText(step.shortDescription);
             ((VH) holder).step.setTag(step);
             ((VH) holder).step.setOnClickListener(clickListener);
 

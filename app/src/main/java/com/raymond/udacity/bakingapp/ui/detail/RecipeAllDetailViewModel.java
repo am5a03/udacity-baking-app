@@ -1,7 +1,7 @@
 package com.raymond.udacity.bakingapp.ui.detail;
 
+import android.content.Intent;
 import android.os.Bundle;
-import android.view.View;
 
 import androidx.annotation.Nullable;
 import androidx.lifecycle.MutableLiveData;
@@ -9,11 +9,13 @@ import androidx.lifecycle.MutableLiveData;
 import com.google.android.material.tabs.TabLayout;
 import com.raymond.udacity.bakingapp.models.db.Recipe;
 import com.raymond.udacity.bakingapp.ui.BaseViewModel;
+import com.raymond.udacity.bakingapp.ui.step.RecipeStepListFragment;
 
 import javax.inject.Inject;
 
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.schedulers.Schedulers;
+import timber.log.Timber;
 
 import static com.raymond.udacity.bakingapp.ui.detail.RecipeAllDetailFragment.KEY_STEP_ID;
 
@@ -39,6 +41,12 @@ public class RecipeAllDetailViewModel extends BaseViewModel {
         }
     };
     private int currentTabPos = 0;
+
+    void handleBroadcast(final Intent intent) {
+        Timber.d("handleBroadcast" + intent);
+        final Bundle bundle = intent.getBundleExtra(RecipeStepListFragment.KEY_ACTION_SELECT_STEP);
+        selectViewPagerItemLiveData.postValue(bundle.getInt(KEY_STEP_ID));
+    }
 
     void saveInstanceState(Bundle outState) {
         outState.putInt(KEY_STEP_ID, currentTabPos);

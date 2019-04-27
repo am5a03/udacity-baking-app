@@ -1,5 +1,7 @@
 package com.raymond.udacity.bakingapp.ui.step;
 
+import android.content.Context;
+import android.content.Intent;
 import android.content.res.Configuration;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -9,6 +11,7 @@ import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.lifecycle.ViewModelProviders;
+import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -23,6 +26,8 @@ import butterknife.BindView;
 public class RecipeStepListFragment extends BaseFragment {
 
     public static final String KEY_RECIPE_ID = "recipe_id";
+    public static final String ACTION_RECIPE_STEP_SELECTION = RecipeStepListFragment.class.getName() + ".STEP_SELECTION";
+    public static final String KEY_ACTION_SELECT_STEP = "select_step";
 
     @BindView(R.id.recycler_view)
     RecyclerView recyclerView;
@@ -31,6 +36,13 @@ public class RecipeStepListFragment extends BaseFragment {
     private RecyclerView.LayoutManager layoutManager;
     private boolean isTwoPane;
 
+    private LocalBroadcastManager broadcastManager;
+
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        broadcastManager = LocalBroadcastManager.getInstance(context);
+    }
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -44,7 +56,9 @@ public class RecipeStepListFragment extends BaseFragment {
                     SimpleFragmentHolderActivity.KEY_SUPPORT_LANDSCAPE_FULL_SCREEN_MODE,
                     !isTwoPane);
             if (isTwoPane) {
-
+                final Intent intent = new Intent(ACTION_RECIPE_STEP_SELECTION);
+                intent.putExtra(KEY_ACTION_SELECT_STEP, stepBundle);
+                broadcastManager.sendBroadcast(intent);
             } else {
                 goToFragment(RecipeAllDetailFragment.class, stepBundle);
             }

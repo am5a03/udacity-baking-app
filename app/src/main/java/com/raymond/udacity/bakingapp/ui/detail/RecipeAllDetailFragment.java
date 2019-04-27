@@ -1,7 +1,12 @@
 package com.raymond.udacity.bakingapp.ui.detail;
 
+import android.content.BroadcastReceiver;
+import android.content.Context;
+import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.res.Configuration;
 import android.os.Bundle;
+import android.util.SparseIntArray;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,6 +17,7 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentStatePagerAdapter;
 import androidx.lifecycle.ViewModelProviders;
+import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 import androidx.viewpager.widget.ViewPager;
 
 import com.google.android.material.tabs.TabLayout;
@@ -24,6 +30,8 @@ import java.util.Arrays;
 import java.util.List;
 
 import butterknife.BindView;
+
+import static com.raymond.udacity.bakingapp.ui.step.RecipeStepListFragment.ACTION_RECIPE_STEP_SELECTION;
 
 public class RecipeAllDetailFragment extends BaseFragment {
     public static final String KEY_RECIPE_ID = "recipe_id";
@@ -38,7 +46,27 @@ public class RecipeAllDetailFragment extends BaseFragment {
     private PagerAdapter pagerAdapter;
     private RecipeAllDetailViewModel viewModel;
     private boolean isTwoPane;
+    private LocalBroadcastManager broadcastManager;
 
+    private BroadcastReceiver actionReceiver = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            if (viewModel != null) viewModel.handleBroadcast(intent);
+        }
+    };
+
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        broadcastManager = LocalBroadcastManager.getInstance(context);
+        broadcastManager.registerReceiver(actionReceiver, new IntentFilter(ACTION_RECIPE_STEP_SELECTION));
+    }
+
+    @Override
+    public void onDetach() {
+        super.onDetach();
+        broadcastManager.unregisterReceiver(actionReceiver);
+    }
 
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
@@ -54,10 +82,10 @@ public class RecipeAllDetailFragment extends BaseFragment {
         viewModel.loadRecipeSteps(getArguments().getInt(KEY_RECIPE_ID));
         viewModel.recipeMutableLiveData.observe(this, recipe -> {
             pagerAdapter.setData(recipe.id, Arrays.asList(recipe.steps));
-            viewPager.setCurrentItem(getArguments().getInt(KEY_STEP_ID));
+            viewPager.setCurrentItem(pagerAdapter.getActualPosition(getArguments().getInt(KEY_STEP_ID)));
         });
-        viewModel.selectViewPagerItemLiveData.observe(this, position -> {
-            viewPager.setCurrentItem(position);
+        viewModel.selectViewPagerItemLiveData.observe(this, stepId -> {
+            viewPager.setCurrentItem(pagerAdapter.getActualPosition(stepId));
         });
     }
 
@@ -103,6 +131,9 @@ public class RecipeAllDetailFragment extends BaseFragment {
         private int recipeId;
         private final List<Step> steps = new ArrayList<>();
 
+        // Due to step id may not match position
+        private final SparseIntArray stepIdPosMapping = new SparseIntArray();
+
         PagerAdapter(FragmentManager fm) {
             super(fm);
         }
@@ -120,13 +151,20 @@ public class RecipeAllDetailFragment extends BaseFragment {
         @Nullable
         @Override
         public CharSequence getPageTitle(int position) {
-            return String.valueOf(position);
+            return String.valueOf(steps.get(position).id);
+        }
+
+        int getActualPosition(int stepId) {
+            return stepIdPosMapping.get(stepId);
         }
 
         void setData(int recipeId, List<Step> steps) {
             this.recipeId = recipeId;
             this.steps.clear();
             this.steps.addAll(steps);
+            for (int i = 0; i < steps.size(); i++) {
+                stepIdPosMapping.put(steps.get(i).id, i);
+            }
             notifyDataSetChanged();
         }
     }
