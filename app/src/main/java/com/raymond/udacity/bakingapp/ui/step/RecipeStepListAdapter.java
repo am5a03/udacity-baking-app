@@ -24,12 +24,18 @@ import butterknife.ButterKnife;
 public class RecipeStepListAdapter extends RecyclerView.Adapter {
 
     private Recipe recipe;
+    private int selectedIndex = -1;
     private final List<Step> steps = new ArrayList<>();
     private final List<Ingredient> ingredients = new ArrayList<>();
     private final View.OnClickListener clickListener;
 
     RecipeStepListAdapter(final View.OnClickListener clickListener) {
         this.clickListener = clickListener;
+    }
+
+    public void setSelectedIndex(int index) {
+        this.selectedIndex = index;
+        notifyDataSetChanged();
     }
 
     @NonNull
@@ -70,10 +76,17 @@ public class RecipeStepListAdapter extends RecyclerView.Adapter {
             final Step step = steps.get(offset);
             ((VH) holder).step.setText(step.shortDescription);
             ((VH) holder).step.setTag(step);
+            ((VH) holder).step.setTag(R.id.step_list_position, position);
             ((VH) holder).step.setOnClickListener(clickListener);
 
             ((VH) holder).itemView.setTag(step);
             ((VH) holder).itemView.setOnClickListener(clickListener);
+
+            if (selectedIndex == position) {
+                ((VH) holder).step.setSelected(true);
+            } else {
+                ((VH) holder).step.setSelected(false);
+            }
         }
     }
 

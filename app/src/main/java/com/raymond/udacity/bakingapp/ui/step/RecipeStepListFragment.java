@@ -28,6 +28,7 @@ public class RecipeStepListFragment extends BaseFragment {
     public static final String KEY_RECIPE_ID = "recipe_id";
     public static final String ACTION_RECIPE_STEP_SELECTION = RecipeStepListFragment.class.getName() + ".STEP_SELECTION";
     public static final String KEY_ACTION_SELECT_STEP = "select_step";
+    public static final String KEY_STEP_LIST_INDEX = "step_index";
 
     @BindView(R.id.recycler_view)
     RecyclerView recyclerView;
@@ -59,6 +60,7 @@ public class RecipeStepListFragment extends BaseFragment {
                 final Intent intent = new Intent(ACTION_RECIPE_STEP_SELECTION);
                 intent.putExtra(KEY_ACTION_SELECT_STEP, stepBundle);
                 broadcastManager.sendBroadcast(intent);
+                adapter.setSelectedIndex(stepBundle.getInt(KEY_STEP_LIST_INDEX));
             } else {
                 goToFragment(RecipeAllDetailFragment.class, stepBundle);
             }
