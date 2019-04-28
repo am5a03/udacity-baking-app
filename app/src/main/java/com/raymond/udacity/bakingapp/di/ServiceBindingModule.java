@@ -14,6 +14,10 @@ public abstract class ServiceBindingModule {
     @ContributesAndroidInjector
     abstract RecipeStepListWidgetService recipeStepListWidgetService();
 
+    @ServiceScoped
+    @ContributesAndroidInjector
+    abstract RecipeStepListUpdateService recipeStepListUpdateService();
+
     // FIXME: 4/28/2019 Should be a BroadcastReceiver btw...
     @ServiceScoped
     @ContributesAndroidInjector

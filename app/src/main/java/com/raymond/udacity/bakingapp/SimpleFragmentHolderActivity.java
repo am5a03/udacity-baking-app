@@ -15,6 +15,8 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
+import com.raymond.udacity.bakingapp.util.Util;
+
 import butterknife.BindView;
 import timber.log.Timber;
 
@@ -59,6 +61,9 @@ public class SimpleFragmentHolderActivity extends BaseActivity {
         setContentView(R.layout.activity_simple_fragment_holder);
 
         final Intent intent = getIntent();
+
+        Timber.d("intentExtra=" + Util.bundleToMap(intent.getExtras()));
+
         final String className = intent.getStringExtra(KEY_FRAGMENT_CLASS);
         final String detailClassName = intent.getStringExtra(KEY_FRAGMENT_DETAIL_CLASS);
         final Bundle fragmentArgs = intent.getBundleExtra(KEY_FRAGMENT_ARGS);

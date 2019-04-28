@@ -1,5 +1,6 @@
 package com.raymond.udacity.bakingapp.ui.widget;
 
+import android.app.PendingIntent;
 import android.appwidget.AppWidgetManager;
 import android.appwidget.AppWidgetProvider;
 import android.content.Context;
@@ -8,8 +9,11 @@ import android.content.SharedPreferences;
 import android.widget.RemoteViews;
 
 import com.raymond.udacity.bakingapp.R;
+import com.raymond.udacity.bakingapp.SimpleFragmentHolderActivity;
 import com.raymond.udacity.bakingapp.models.db.Recipe;
+import com.raymond.udacity.bakingapp.ui.detail.RecipeAllDetailFragment;
 import com.raymond.udacity.bakingapp.ui.main.ChooseRecipeToAddViewModel;
+import com.raymond.udacity.bakingapp.ui.step.RecipeStepListFragment;
 
 import javax.inject.Inject;
 
@@ -30,6 +34,13 @@ public class RecipeWidgetProvider extends AppWidgetProvider {
         intent.putExtra(RecipeStepListUpdateService.KEY_RECIPE_ID, recipe.id);
         views.setTextViewText(R.id.widget_recipe_title, recipe.name);
         views.setRemoteAdapter(R.id.widget_recipe_step_list, intent);
+
+        final Intent appIntent = new Intent(context, SimpleFragmentHolderActivity.class);
+        appIntent.putExtra(SimpleFragmentHolderActivity.KEY_FRAGMENT_CLASS, RecipeStepListFragment.class.getName());
+        appIntent.putExtra(SimpleFragmentHolderActivity.KEY_FRAGMENT_DETAIL_CLASS, RecipeAllDetailFragment.class.getName());
+        PendingIntent pendingIntent = PendingIntent.getActivity(context, 0, appIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+        views.setPendingIntentTemplate(R.id.widget_recipe_step_list, pendingIntent);
+
         appWidgetManager.updateAppWidget(appWidgetId, views);
     }
 
