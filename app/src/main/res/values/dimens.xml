@@ -1,3 +1,19 @@
 <resources>
     <dimen name="fab_margin">16dp</dimen>
+
+    <dimen name="material_small">4dp</dimen>
+    <dimen name="material_medium">8dp</dimen>
+    <dimen name="material_large">16dp</dimen>
+    <dimen name="material_xlarge">32dp</dimen>
+
+    <item name="is_twopane" type="bool">false</item>
+    <item name="is_phone" type="bool">true</item>
+    <item name="min_widget_height" type="dimen">110dp</item>
+    <item name="min_widget_width" type="dimen">110dp</item>
+
+    <!--
+Refer to App Widget Documentation for margin information
+http://developer.android.com/guide/topics/appwidgets/index.html#CreatingLayout
+    -->
+    <dimen name="widget_margin">8dp</dimen>
 </resources>

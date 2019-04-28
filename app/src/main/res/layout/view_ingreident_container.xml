@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="horizontal"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+    <TextView
+        android:id="@+id/ingredient_name"
+        android:paddingRight="@dimen/material_xlarge"
+        android:paddingLeft="@dimen/material_xlarge"
+        android:paddingTop="@dimen/material_medium"
+        android:paddingBottom="@dimen/material_medium"
+        tools:text="Sugar"
+        android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+        android:layout_weight="1"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content" />
+    <TextView
+        android:id="@+id/ingredient_measure"
+        android:paddingRight="@dimen/material_xlarge"
+        android:paddingLeft="@dimen/material_xlarge"
+        android:paddingTop="@dimen/material_medium"
+        android:paddingBottom="@dimen/material_medium"
+        tools:text="1 tbps"
+        android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+        android:layout_gravity="end"
+        android:gravity="end|center_vertical"
+        android:layout_weight="1"
+        android:layout_width="0dp"
+        android:layout_height="match_parent" />
+</LinearLayout>

@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <integer name="widget_update_interval_short">30000</integer>
+    <integer name="widget_update_interval_normal">86400000</integer>
+</resources>
