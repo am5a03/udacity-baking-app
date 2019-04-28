@@ -51,7 +51,14 @@ public class RecipeStepListFragment extends BaseFragment {
         isTwoPane = getResources().getBoolean(R.bool.is_twopane);
         viewModel = ViewModelProviders.of(this, viewModelFactory)
                 .get(RecipeStepListViewModel.class);
-        viewModel.recipeLiveData.observe(this, recipe -> adapter.setData(recipe));
+        viewModel.recipeLiveData.observe(this, recipe -> {
+            adapter.setData(recipe);
+
+            // Set the index if it's in two panes mode
+            if (isTwoPane) {
+                adapter.setSelectedIndex(recipe.ingredients.length);
+            }
+        });
         viewModel.stepClickLiveData.observe(this, stepBundle -> {
             stepBundle.putBoolean(
                     SimpleFragmentHolderActivity.KEY_SUPPORT_LANDSCAPE_FULL_SCREEN_MODE,

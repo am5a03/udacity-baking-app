@@ -33,7 +33,7 @@ public class RecipeStepListAdapter extends RecyclerView.Adapter {
         this.clickListener = clickListener;
     }
 
-    public void setSelectedIndex(int index) {
+    void setSelectedIndex(int index) {
         this.selectedIndex = index;
         notifyDataSetChanged();
     }
