@@ -36,7 +36,16 @@
             </intent-filter>
         </activity>
         <activity android:name=".SimpleFragmentHolderActivity" />
-        <activity android:name=".ui.main.ChooseRecipeToAddActivity" />
+        <activity android:name=".ui.main.ChooseRecipeToAddActivity">
+            <intent-filter>
+                <action android:name="android.appwidget.action.APPWIDGET_CONFIGURE"/>
+            </intent-filter>
+        </activity>
+
+        <service
+            android:name=".ui.widget.RecipeListWidgetService"
+            android:permission="android.permission.BIND_REMOTEVIEWS"
+            />
     </application>
 
 </manifest>

@@ -21,6 +21,6 @@ public class ChooseRecipeToAddActivity extends BaseActivity {
         toolbar.setTitle(R.string.choose_recipe);
         setSupportActionBar(toolbar);
 
-        initFragment(ChooseRecipeToAddFragment.newInstance());
+        initFragment(ChooseRecipeToAddFragment.newInstance(getIntent().getExtras()));
     }
 }
