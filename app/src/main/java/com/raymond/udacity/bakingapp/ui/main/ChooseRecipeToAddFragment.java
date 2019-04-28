@@ -18,7 +18,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.raymond.udacity.bakingapp.R;
 import com.raymond.udacity.bakingapp.ui.BaseFragment;
-import com.raymond.udacity.bakingapp.ui.widget.RecipeListWidgetService;
+import com.raymond.udacity.bakingapp.ui.widget.RecipeStepListWidgetService;
 
 import butterknife.BindView;
 import timber.log.Timber;
@@ -56,7 +56,7 @@ public class ChooseRecipeToAddFragment extends BaseFragment {
         viewModel.recipeLiveData.observe(this, recipes -> adapter.setRecipes(recipes));
         viewModel.recipeChosenLiveData.observe(this, recipe -> {
             final RemoteViews views = new RemoteViews(getContext().getPackageName(), R.layout.recipe_widget_provider);
-            final Intent intent = new Intent(getContext(), RecipeListWidgetService.class);
+            final Intent intent = new Intent(getContext(), RecipeStepListWidgetService.class);
             views.setTextViewText(R.id.widget_recipe_title, recipe.name);
 //            views.setRemoteAdapter(R.id.widget_recipe_step_list, intent);
 

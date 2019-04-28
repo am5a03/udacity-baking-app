@@ -43,8 +43,12 @@
         </activity>
 
         <service
-            android:name=".ui.widget.RecipeListWidgetService"
+            android:name=".ui.widget.RecipeStepListWidgetService"
             android:permission="android.permission.BIND_REMOTEVIEWS"
+            />
+        <service
+            android:name=".ui.widget.RecipeStepListUpdateService"
+            android:permission="android.permission.BIND_JOB_SERVICE"
             />
     </application>
 
