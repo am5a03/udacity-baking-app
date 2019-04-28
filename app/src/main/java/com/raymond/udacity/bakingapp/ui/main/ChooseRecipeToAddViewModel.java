@@ -1,5 +1,6 @@
 package com.raymond.udacity.bakingapp.ui.main;
 
+import android.content.SharedPreferences;
 import android.view.View;
 
 import androidx.lifecycle.MutableLiveData;
@@ -15,6 +16,7 @@ import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.schedulers.Schedulers;
 
 public class ChooseRecipeToAddViewModel extends BaseViewModel {
+    public static final String KEY_WIDGET_RECIPE_PAIR = "widget_recipe_pair_";
     final MutableLiveData<List<Recipe>> recipeLiveData = new MutableLiveData<>();
     final MutableLiveData<Recipe> recipeChosenLiveData = new MutableLiveData<>();
     final View.OnClickListener clickListener = v -> {
@@ -22,8 +24,12 @@ public class ChooseRecipeToAddViewModel extends BaseViewModel {
         recipeChosenLiveData.postValue(recipe);
     };
 
+    private final SharedPreferences sharedPreferences;
+
     @Inject
-    ChooseRecipeToAddViewModel() {}
+    ChooseRecipeToAddViewModel(SharedPreferences sharedPreferences) {
+          this.sharedPreferences = sharedPreferences;
+    }
 
     void loadRecipe() {
         disposable.add(
@@ -32,5 +38,11 @@ public class ChooseRecipeToAddViewModel extends BaseViewModel {
                         .observeOn(AndroidSchedulers.mainThread())
                         .subscribe(recipeLiveData::postValue)
         );
+    }
+
+    void saveWidgetState(int receipeId, int appWidgetId) {
+        sharedPreferences.edit()
+                .putInt(KEY_WIDGET_RECIPE_PAIR + appWidgetId, receipeId)
+                .apply();
     }
 }
