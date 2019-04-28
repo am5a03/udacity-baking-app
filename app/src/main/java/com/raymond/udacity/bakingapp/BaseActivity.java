@@ -4,6 +4,8 @@ import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.lifecycle.ViewModelProvider;
 
 import com.raymond.udacity.bakingapp.repository.RecipeRepository;
@@ -12,6 +14,7 @@ import javax.inject.Inject;
 
 import butterknife.ButterKnife;
 import dagger.android.support.DaggerAppCompatActivity;
+import timber.log.Timber;
 
 public abstract class BaseActivity extends DaggerAppCompatActivity {
     @Inject
@@ -45,6 +48,18 @@ public abstract class BaseActivity extends DaggerAppCompatActivity {
         intent.putExtra(SimpleFragmentHolderActivity.KEY_SUPPORT_LANDSCAPE_FULL_SCREEN_MODE, masterBundle.getBoolean(SimpleFragmentHolderActivity.KEY_SUPPORT_LANDSCAPE_FULL_SCREEN_MODE));
         startActivity(intent);
 
+    }
+
+    protected void initFragment(Fragment fragment) {
+        try {
+            FragmentManager fm = getSupportFragmentManager();
+            FragmentTransaction transaction = fm.beginTransaction();
+
+            transaction.replace(R.id.fragment_container, fragment);
+            transaction.commit();
+        } catch (Exception e) {
+            Timber.e(e);
+        }
     }
 
     @Override

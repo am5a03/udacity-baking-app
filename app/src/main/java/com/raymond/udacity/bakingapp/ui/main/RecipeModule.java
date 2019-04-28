@@ -17,8 +17,18 @@ public abstract class RecipeModule {
     @ContributesAndroidInjector
     abstract RecipeFragment contributeRecipeFragment();
 
+    @FragmentScoped
+    @ContributesAndroidInjector
+    abstract ChooseRecipeToAddFragment contributeChooseRecipeToAddFragment();
+
     @Binds
     @IntoMap
     @ViewModelKey(RecipeViewModel.class)
     abstract ViewModel recipeViewModel(RecipeViewModel viewModel);
+
+    @Binds
+    @IntoMap
+    @ViewModelKey(ChooseRecipeToAddViewModel.class)
+    abstract ViewModel chooseRecipeToAddViewModel(ChooseRecipeToAddViewModel viewModel);
+
 }

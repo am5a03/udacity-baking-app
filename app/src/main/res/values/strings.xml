@@ -6,4 +6,7 @@
     <string name="steps">Steps</string>
 
     <string name="serving">Serving : %1$s</string>
+    <string name="appwidget_text">EXAMPLE</string>
+    <string name="add_widget">Add widget</string>
+    <string name="choose_recipe">Choose a recipe</string>
 </resources>

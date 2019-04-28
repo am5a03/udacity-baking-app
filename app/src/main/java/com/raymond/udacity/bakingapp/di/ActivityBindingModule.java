@@ -3,6 +3,7 @@ package com.raymond.udacity.bakingapp.di;
 import com.raymond.udacity.bakingapp.MainActivity;
 import com.raymond.udacity.bakingapp.SimpleFragmentHolderActivity;
 import com.raymond.udacity.bakingapp.ui.detail.RecipeDetailModule;
+import com.raymond.udacity.bakingapp.ui.main.ChooseRecipeToAddActivity;
 import com.raymond.udacity.bakingapp.ui.main.RecipeModule;
 import com.raymond.udacity.bakingapp.ui.step.RecipeStepListModule;
 
@@ -29,4 +30,12 @@ public abstract class ActivityBindingModule {
             }
     )
     abstract SimpleFragmentHolderActivity simpleFragmentHolderActivity();
+
+    @ActivityScoped
+    @ContributesAndroidInjector(
+            modules = {
+                    RecipeModule.class
+            }
+    )
+    abstract ChooseRecipeToAddActivity chooseRecipeToAddActivity();
 }
