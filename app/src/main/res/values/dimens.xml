@@ -8,6 +8,8 @@
 
     <item name="is_twopane" type="bool">false</item>
     <item name="is_phone" type="bool">true</item>
+    <item name="min_widget_height" type="dimen">110dp</item>
+    <item name="min_widget_width" type="dimen">110dp</item>
 
     <!--
 Refer to App Widget Documentation for margin information
