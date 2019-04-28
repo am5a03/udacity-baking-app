@@ -1,4 +1,4 @@
-package com.raymond.udacity.bakingapp.ui.main;
+package com.raymond.udacity.bakingapp.ui.widget;
 
 import android.app.PendingIntent;
 import android.appwidget.AppWidgetManager;
@@ -7,9 +7,12 @@ import android.content.Context;
 import android.content.Intent;
 import android.widget.RemoteViews;
 
+import androidx.core.app.JobIntentService;
+
 import com.raymond.udacity.bakingapp.R;
 
 import static android.app.PendingIntent.FLAG_ONE_SHOT;
+import static com.raymond.udacity.bakingapp.ui.widget.RecipeStepListUpdateService.KEY_RECIPE_ID;
 
 /**
  * Implementation of App Widget functionality.
@@ -19,7 +22,6 @@ public class RecipeWidgetProvider extends AppWidgetProvider {
     static void updateAppWidget(Context context, AppWidgetManager appWidgetManager,
                                 int appWidgetId) {
 
-        CharSequence widgetText = context.getString(R.string.appwidget_text);
         // Construct the RemoteViews object
         RemoteViews views = new RemoteViews(context.getPackageName(), R.layout.recipe_widget_provider);
 //        views.setTextViewText(R.id.appwidget_text, widgetText);
@@ -35,6 +37,9 @@ public class RecipeWidgetProvider extends AppWidgetProvider {
     @Override
     public void onUpdate(Context context, AppWidgetManager appWidgetManager, int[] appWidgetIds) {
         // There may be multiple widgets active, so update all of them
+        final Intent intent = new Intent();
+        intent.putExtra(KEY_RECIPE_ID, 999);
+        JobIntentService.enqueueWork(context, RecipeStepListUpdateService.class, 0, intent);
         for (int appWidgetId : appWidgetIds) {
             updateAppWidget(context, appWidgetManager, appWidgetId);
         }

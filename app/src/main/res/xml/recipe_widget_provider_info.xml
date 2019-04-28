@@ -5,7 +5,7 @@
     android:minWidth="110dp"
     android:minHeight="40dp"
     android:resizeMode="horizontal|vertical"
-    android:updatePeriodMillis="86400000"
+    android:updatePeriodMillis="@integer/widget_update_interval_normal"
     android:widgetCategory="home_screen"
     android:configure="com.raymond.udacity.bakingapp.ui.main.ChooseRecipeToAddActivity"
     />

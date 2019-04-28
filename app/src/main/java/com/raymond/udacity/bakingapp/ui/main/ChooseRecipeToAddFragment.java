@@ -58,7 +58,7 @@ public class ChooseRecipeToAddFragment extends BaseFragment {
             final RemoteViews views = new RemoteViews(getContext().getPackageName(), R.layout.recipe_widget_provider);
             final Intent intent = new Intent(getContext(), RecipeStepListWidgetService.class);
             views.setTextViewText(R.id.widget_recipe_title, recipe.name);
-//            views.setRemoteAdapter(R.id.widget_recipe_step_list, intent);
+            views.setRemoteAdapter(R.id.widget_recipe_step_list, intent);
 
             appWidgetManager.updateAppWidget(appWidgetId, views);
 
