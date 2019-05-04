@@ -22,6 +22,8 @@ public abstract class BaseFragment extends DaggerFragment {
     @Inject
     public ViewModelProvider.Factory viewModelFactory;
 
+    public NavController navController = new NavController();
+
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
@@ -32,14 +34,14 @@ public abstract class BaseFragment extends DaggerFragment {
         return (BaseActivity) getActivity();
     }
 
-    protected <T extends Fragment> void goToFragment(final Class<T> fragmentClazz, final Bundle arguments) {
-        getBaseActivity().goToFragment(fragmentClazz, arguments);
+    public <T extends Fragment> void goToFragment(final Class<T> fragmentClazz, final Bundle arguments) {
+        navController.goToFragment(getActivity(), fragmentClazz, arguments);
     }
 
-    protected <MASTER extends Fragment, DETAIL extends Fragment> void goToMasterDetailFragment(final Class<MASTER> masterClazz,
+    public  <MASTER extends Fragment, DETAIL extends Fragment> void goToMasterDetailFragment(final Class<MASTER> masterClazz,
                                                                                                final Class<DETAIL> detailClazz,
                                                                                                final Bundle masterBundle,
                                                                                                final Bundle detailBundle) {
-        getBaseActivity().goToMasterDetailFragment(masterClazz, detailClazz, masterBundle, detailBundle);
+        navController.goToMasterDetailFragment(getActivity(), masterClazz, detailClazz, masterBundle, detailBundle);
     }
 }

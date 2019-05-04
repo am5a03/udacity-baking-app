@@ -1,9 +1,9 @@
 package com.raymond.udacity.bakingapp.ui.main;
 
 import android.os.Bundle;
-import android.util.Pair;
 import android.view.View;
 
+import androidx.core.util.Pair;
 import androidx.lifecycle.MutableLiveData;
 
 import com.raymond.udacity.bakingapp.SimpleFragmentHolderActivity;
@@ -11,6 +11,7 @@ import com.raymond.udacity.bakingapp.models.db.Recipe;
 import com.raymond.udacity.bakingapp.ui.BaseViewModel;
 import com.raymond.udacity.bakingapp.ui.detail.RecipeAllDetailFragment;
 import com.raymond.udacity.bakingapp.ui.step.RecipeStepListFragment;
+import com.raymond.udacity.bakingapp.util.Util;
 
 import java.util.List;
 
@@ -62,16 +63,7 @@ public class RecipeViewModel extends BaseViewModel {
         @Override
         public void onClick(View v) {
             final Recipe recipe = (Recipe) v.getTag();
-            final Bundle masterBundle = new Bundle();
-            masterBundle.putInt(RecipeStepListFragment.KEY_RECIPE_ID, recipe.id);
-            masterBundle.putBoolean(SimpleFragmentHolderActivity.KEY_DISPLAY_HOME_AS_UP_ENABLED, true);
-            masterBundle.putString(SimpleFragmentHolderActivity.KEY_TITLE, recipe.name);
-
-            final Bundle detailBundle = new Bundle();
-            detailBundle.putInt(RecipeAllDetailFragment.KEY_RECIPE_ID, recipe.id);
-            detailBundle.putInt(RecipeAllDetailFragment.KEY_STEP_ID, 0);
-
-            liveData.postValue(Pair.create(masterBundle, detailBundle));
+            liveData.postValue(Util.createMasterDetailBundleFromRecipe(recipe));
         }
     }
 }

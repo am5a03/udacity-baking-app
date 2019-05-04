@@ -8,6 +8,7 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 
+import com.raymond.udacity.bakingapp.BaseActivity;
 import com.raymond.udacity.bakingapp.R;
 
 import dagger.android.AndroidInjector;
