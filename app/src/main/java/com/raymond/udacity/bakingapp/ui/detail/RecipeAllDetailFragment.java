@@ -77,14 +77,15 @@ public class RecipeAllDetailFragment extends BaseFragment {
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         isTwoPane = getResources().getBoolean(R.bool.is_twopane);
+        pagerAdapter = new PagerAdapter(getFragmentManager());
         viewModel = ViewModelProviders.of(this, viewModelFactory)
                 .get(RecipeAllDetailViewModel.class);
         viewModel.loadRecipeSteps(getArguments().getInt(KEY_RECIPE_ID));
-        viewModel.recipeMutableLiveData.observe(this, recipe -> {
+        viewModel.getRecipeMutableLiveData().observe(this, recipe -> {
             pagerAdapter.setData(recipe.id, Arrays.asList(recipe.steps));
             viewPager.setCurrentItem(pagerAdapter.getActualPosition(getArguments().getInt(KEY_STEP_ID)));
         });
-        viewModel.selectViewPagerItemLiveData.observe(this, stepId -> {
+        viewModel.getSelectViewPagerItemLiveData().observe(this, stepId -> {
             viewPager.setCurrentItem(pagerAdapter.getActualPosition(stepId));
         });
     }
@@ -98,7 +99,6 @@ public class RecipeAllDetailFragment extends BaseFragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        pagerAdapter = new PagerAdapter(getFragmentManager());
         viewPager.setAdapter(pagerAdapter);
         tabLayout.setupWithViewPager(viewPager);
         tabLayout.addOnTabSelectedListener(viewModel.tablayoutOnClickListener);

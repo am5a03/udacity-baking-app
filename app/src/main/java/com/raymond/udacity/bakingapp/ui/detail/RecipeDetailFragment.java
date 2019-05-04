@@ -61,7 +61,7 @@ public class RecipeDetailFragment extends BaseFragment {
         super.onCreate(savedInstanceState);
         viewModel = ViewModelProviders.of(this, viewModelFactory)
                 .get(RecipeDetailViewModel.class);
-        viewModel.stepLiveData.observe(this, stepWrapper -> {
+        viewModel.getStepLiveData().observe(this, stepWrapper -> {
             playerView.setVisibility(stepWrapper.hasVideo ? View.VISIBLE : View.GONE);
             if (stepWrapper.hasVideo) {
                 player = ExoPlayerFactory.newSimpleInstance(getContext());

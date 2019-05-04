@@ -66,4 +66,16 @@ public class RecipeAllDetailViewModel extends BaseViewModel {
                         .subscribe(recipeMutableLiveData::postValue)
         );
     }
+
+    public MutableLiveData<Integer> getSelectViewPagerItemLiveData() {
+        return selectViewPagerItemLiveData;
+    }
+
+    public MutableLiveData<Recipe> getRecipeMutableLiveData() {
+        return recipeMutableLiveData;
+    }
+
+    public TabLayout.OnTabSelectedListener getTablayoutOnClickListener() {
+        return tablayoutOnClickListener;
+    }
 }

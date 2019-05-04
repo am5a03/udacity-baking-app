@@ -52,6 +52,8 @@ public final class MockDataSource {
 
             step.description = "Some description " + i;
             step.shortDescription = "Short description " + i;
+
+            steps[i] = step;
         }
         return steps;
     }
