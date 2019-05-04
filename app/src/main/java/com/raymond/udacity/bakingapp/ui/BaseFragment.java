@@ -6,6 +6,9 @@ import android.view.View;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.ViewModel;
+import androidx.lifecycle.ViewModelProvider;
+import androidx.lifecycle.ViewModelProviders;
 
 import com.raymond.udacity.bakingapp.BaseActivity;
 import com.raymond.udacity.bakingapp.di.AppViewModelFactory;
@@ -17,7 +20,7 @@ import dagger.android.support.DaggerFragment;
 
 public abstract class BaseFragment extends DaggerFragment {
     @Inject
-    public AppViewModelFactory viewModelFactory;
+    public ViewModelProvider.Factory viewModelFactory;
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {

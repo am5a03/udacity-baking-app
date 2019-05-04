@@ -26,7 +26,7 @@ public class RecipeFragment extends BaseFragment {
     RecyclerView recyclerView;
     private RecipeAdapter adapter;
     private RecyclerView.LayoutManager layoutManager;
-    private RecipeViewModel viewModel;
+    RecipeViewModel viewModel;
     private boolean isTwoPane;
 
     public static RecipeFragment newInstance() {
@@ -43,14 +43,14 @@ public class RecipeFragment extends BaseFragment {
         super.onCreate(savedInstanceState);
         isTwoPane = getResources().getBoolean(R.bool.is_twopane);
         viewModel = ViewModelProviders.of(this, viewModelFactory).get(RecipeViewModel.class);
-        viewModel.recipeLiveData.observe(this, recipes -> adapter.setRecipes(recipes));
-        viewModel.recipeBundleClickLiveData.observe(this, masterDetailBundlePair -> {
+        viewModel.getRecipeLiveData().observe(this, recipes -> adapter.setRecipes(recipes));
+        viewModel.getRecipeBundleClickLiveData().observe(this, masterDetailBundlePair -> {
             Timber.d("recipe=" + masterDetailBundlePair);
             goToMasterDetailFragment(RecipeStepListFragment.class, RecipeAllDetailFragment.class,
                     masterDetailBundlePair.first, masterDetailBundlePair.second);
 
         });
-        adapter = new RecipeAdapter(viewModel.clickListener);
+        adapter = new RecipeAdapter(viewModel.getClickListener());
     }
 
     @Nullable
