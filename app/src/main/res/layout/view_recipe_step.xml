@@ -1,29 +1,62 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:orientation="vertical"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+
     <TextView
         android:id="@+id/step_headline"
-        android:paddingTop="@dimen/material_large"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:paddingLeft="@dimen/material_xlarge"
+        android:paddingTop="@dimen/material_large"
         android:paddingRight="@dimen/material_xlarge"
         android:text="@string/steps"
         android:textAppearance="@style/TextAppearance.AppCompat.Headline"
+        android:visibility="visible"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toTopOf="@+id/barrier"/>
+
+    <androidx.constraintlayout.widget.Barrier
+        android:id="@+id/barrier"
+        app:layout_constraintTop_toBottomOf="@id/step_headline"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:barrierDirection="bottom"
+        android:orientation="horizontal"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content" />
+
     <TextView
         android:id="@+id/step"
-        android:paddingLeft="@dimen/material_xlarge"
-        android:paddingRight="@dimen/material_xlarge"
-        android:paddingTop="@dimen/material_medium"
-        android:paddingBottom="@dimen/material_medium"
-        tools:text="Step 1"
-        android:textAppearance="@style/TextAppearance.AppCompat.Body1"
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:clickable="true"
         android:background="@drawable/selected_list_item"
-        android:foreground="?attr/selectableItemBackground"/>
-</LinearLayout>
+        android:clickable="true"
+        android:foreground="?attr/selectableItemBackground"
+        android:paddingLeft="@dimen/material_xlarge"
+        android:paddingTop="@dimen/material_medium"
+        android:paddingRight="@dimen/material_xlarge"
+        android:paddingBottom="@dimen/material_medium"
+        android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toLeftOf="@id/step_headline"
+        app:layout_constraintTop_toBottomOf="@id/barrier"
+        tools:text="Step 1" />
+
+    <com.facebook.drawee.view.SimpleDraweeView
+        android:id="@+id/thumbnail"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:layout_marginRight="@dimen/material_large"
+        android:layout_marginTop="@dimen/material_large"
+        android:layout_marginBottom="@dimen/material_large"
+        app:layout_constraintTop_toBottomOf="@id/barrier"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
+</androidx.constraintlayout.widget.ConstraintLayout>

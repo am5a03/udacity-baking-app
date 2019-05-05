@@ -43,11 +43,11 @@
         </activity>
 
         <service
-            android:name=".ui.widget.RecipeStepListWidgetService"
+            android:name=".ui.widget.RecipeIngredientListWidgetService"
             android:permission="android.permission.BIND_REMOTEVIEWS"
             />
         <service
-            android:name=".ui.widget.RecipeStepListUpdateService"
+            android:name=".ui.widget.RecipeUpdateService"
             android:permission="android.permission.BIND_JOB_SERVICE"
             />
 

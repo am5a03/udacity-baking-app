@@ -8,6 +8,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.facebook.drawee.view.SimpleDraweeView;
 import com.raymond.udacity.bakingapp.R;
 import com.raymond.udacity.bakingapp.models.db.Ingredient;
 import com.raymond.udacity.bakingapp.models.db.Recipe;
@@ -87,6 +88,13 @@ public class RecipeStepListAdapter extends RecyclerView.Adapter {
             } else {
                 ((VH) holder).step.setSelected(false);
             }
+
+            if (step.thumbnailURL != null && !step.thumbnailURL.isEmpty()) {
+                ((VH) holder).draweeView.setImageURI(step.thumbnailURL);
+                ((VH) holder).draweeView.setVisibility(View.VISIBLE);
+            } else {
+                ((VH) holder).draweeView.setVisibility(View.GONE);
+            }
         }
     }
 
@@ -134,6 +142,9 @@ public class RecipeStepListAdapter extends RecyclerView.Adapter {
 
         @BindView(R.id.step)
         TextView step;
+
+        @BindView(R.id.thumbnail)
+        SimpleDraweeView draweeView;
 
         VH(@NonNull View itemView) {
             super(itemView);

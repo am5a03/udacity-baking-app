@@ -8,7 +8,6 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.RemoteViews;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -18,8 +17,6 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.raymond.udacity.bakingapp.R;
 import com.raymond.udacity.bakingapp.ui.BaseFragment;
-import com.raymond.udacity.bakingapp.ui.widget.RecipeStepListUpdateService;
-import com.raymond.udacity.bakingapp.ui.widget.RecipeStepListWidgetService;
 import com.raymond.udacity.bakingapp.ui.widget.RecipeWidgetProvider;
 
 import butterknife.BindView;

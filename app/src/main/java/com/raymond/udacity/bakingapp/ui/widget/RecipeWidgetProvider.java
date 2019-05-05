@@ -30,8 +30,8 @@ public class RecipeWidgetProvider extends AppWidgetProvider {
 
     public static void updateViews(Context context, Recipe recipe, AppWidgetManager appWidgetManager, int appWidgetId) {
         final RemoteViews views = new RemoteViews(context.getPackageName(), R.layout.recipe_widget_provider);
-        final Intent intent = new Intent(context, RecipeStepListWidgetService.class);
-        intent.putExtra(RecipeStepListUpdateService.KEY_RECIPE_ID, recipe.id);
+        final Intent intent = new Intent(context, RecipeIngredientListWidgetService.class);
+        intent.putExtra(RecipeUpdateService.KEY_RECIPE_ID, recipe.id);
         views.setTextViewText(R.id.widget_recipe_title, recipe.name);
         views.setRemoteAdapter(R.id.widget_recipe_step_list, intent);
 
@@ -56,7 +56,7 @@ public class RecipeWidgetProvider extends AppWidgetProvider {
             final int recipeId =
                     sharedPreferences.getInt(ChooseRecipeToAddViewModel.KEY_WIDGET_RECIPE_PAIR + appWidgetId, -999);
             if (recipeId > 0) {
-                RecipeStepListUpdateService.updateRecipeById(context);
+                RecipeUpdateService.updateRecipeById(context);
             }
         }
 

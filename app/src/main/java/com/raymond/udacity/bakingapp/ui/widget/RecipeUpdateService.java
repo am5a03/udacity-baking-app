@@ -17,7 +17,7 @@ import javax.inject.Inject;
 import dagger.android.AndroidInjection;
 import timber.log.Timber;
 
-public class RecipeStepListUpdateService extends JobIntentService {
+public class RecipeUpdateService extends JobIntentService {
     public static final String KEY_RECIPE_ID = "recipe_id";
 
     @Inject
@@ -52,6 +52,6 @@ public class RecipeStepListUpdateService extends JobIntentService {
 
     public static void updateRecipeById(Context context) {
         final Intent intent = new Intent();
-        JobIntentService.enqueueWork(context.getApplicationContext(), RecipeStepListUpdateService.class, 0, intent);
+        JobIntentService.enqueueWork(context.getApplicationContext(), RecipeUpdateService.class, 0, intent);
     }
 }
