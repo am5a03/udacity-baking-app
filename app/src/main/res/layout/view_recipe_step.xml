@@ -3,8 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:orientation="vertical">
+    android:layout_height="wrap_content">
 
     <TextView
         android:id="@+id/step_headline"
@@ -33,8 +32,10 @@
         android:layout_height="wrap_content" />
 
     <TextView
+        app:layout_constraintRight_toLeftOf="@+id/thumbnail"
+        app:layout_constraintHorizontal_bias="0.0"
         android:id="@+id/step"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:background="@drawable/selected_list_item"
         android:clickable="true"
