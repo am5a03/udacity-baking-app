@@ -43,6 +43,7 @@ public class RecipeAllDetailFragment extends BaseFragment {
     @BindView(R.id.tab_layout)
     TabLayout tabLayout;
 
+    RecipeDetailFragmentFactory recipeDetailFragmentFactory = new RecipeDetailFragmentFactory();
     private PagerAdapter pagerAdapter;
     private RecipeAllDetailViewModel viewModel;
     private boolean isTwoPane;
@@ -77,7 +78,7 @@ public class RecipeAllDetailFragment extends BaseFragment {
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         isTwoPane = getResources().getBoolean(R.bool.is_twopane);
-        pagerAdapter = new PagerAdapter(getFragmentManager());
+        pagerAdapter = new PagerAdapter(getFragmentManager(), recipeDetailFragmentFactory);
         viewModel = ViewModelProviders.of(this, viewModelFactory)
                 .get(RecipeAllDetailViewModel.class);
         viewModel.loadRecipeSteps(getArguments().getInt(KEY_RECIPE_ID));
@@ -125,6 +126,11 @@ public class RecipeAllDetailFragment extends BaseFragment {
         viewModel.restoreInstanecState(savedInstanceState);
     }
 
+    static class RecipeDetailFragmentFactory {
+        RecipeDetailFragment createFragment(int recipeId, int stepId) {
+            return RecipeDetailFragment.newInstance(recipeId, stepId);
+        }
+    }
 
 
     static class PagerAdapter extends FragmentStatePagerAdapter {
@@ -133,14 +139,16 @@ public class RecipeAllDetailFragment extends BaseFragment {
 
         // Due to step id may not match position
         private final SparseIntArray stepIdPosMapping = new SparseIntArray();
+        private final RecipeDetailFragmentFactory recipeDetailFragmentFactory;
 
-        PagerAdapter(FragmentManager fm) {
+        PagerAdapter(FragmentManager fm, RecipeDetailFragmentFactory recipeDetailFragmentFactory) {
             super(fm);
+            this.recipeDetailFragmentFactory = recipeDetailFragmentFactory;
         }
 
         @Override
         public Fragment getItem(int position) {
-            return RecipeDetailFragment.newInstance(recipeId, steps.get(position).id);
+            return recipeDetailFragmentFactory.createFragment(recipeId, steps.get(position).id);
         }
 
         @Override
