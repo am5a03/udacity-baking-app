@@ -1,6 +1,5 @@
 package com.raymond.udacity.bakingapp.ui.widget;
 
-import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -9,8 +8,8 @@ import android.widget.RemoteViewsService;
 
 import com.raymond.udacity.bakingapp.R;
 import com.raymond.udacity.bakingapp.SimpleFragmentHolderActivity;
+import com.raymond.udacity.bakingapp.models.db.Ingredient;
 import com.raymond.udacity.bakingapp.models.db.Recipe;
-import com.raymond.udacity.bakingapp.models.db.Step;
 import com.raymond.udacity.bakingapp.repository.RecipeRepository;
 import com.raymond.udacity.bakingapp.ui.detail.RecipeAllDetailFragment;
 import com.raymond.udacity.bakingapp.ui.step.RecipeStepListFragment;
@@ -24,7 +23,7 @@ import dagger.android.AndroidInjection;
 import io.reactivex.disposables.CompositeDisposable;
 import timber.log.Timber;
 
-public class RecipeStepListWidgetService extends RemoteViewsService {
+public class RecipeIngredientListWidgetService extends RemoteViewsService {
     @Inject
     RecipeRepository recipeRepository;
 
@@ -36,19 +35,19 @@ public class RecipeStepListWidgetService extends RemoteViewsService {
 
     @Override
     public RemoteViewsFactory onGetViewFactory(Intent intent) {
-        return new RecipeListRemoteViewsFactory(getApplicationContext(), recipeRepository, intent);
+        return new RecipeIngredientListRemoteViewsFactory(getApplicationContext(), recipeRepository, intent);
     }
 }
 
-class RecipeListRemoteViewsFactory implements RemoteViewsService.RemoteViewsFactory {
+class RecipeIngredientListRemoteViewsFactory implements RemoteViewsService.RemoteViewsFactory {
     private Context context;
     private RecipeRepository recipeRepository;
     private Intent intent;
     private Recipe recipe;
-    private List<Step> steps;
+    private List<Ingredient> ingredients;
     private CompositeDisposable disposables;
 
-    RecipeListRemoteViewsFactory(Context context, RecipeRepository recipeRepository, Intent intent) {
+    RecipeIngredientListRemoteViewsFactory(Context context, RecipeRepository recipeRepository, Intent intent) {
         this.context = context;
         this.recipeRepository = recipeRepository;
         this.intent = intent;
@@ -62,16 +61,16 @@ class RecipeListRemoteViewsFactory implements RemoteViewsService.RemoteViewsFact
 
     @Override
     public void onDataSetChanged() {
-        final int recipeId = this.intent.getIntExtra(RecipeStepListUpdateService.KEY_RECIPE_ID, -1);
+        final int recipeId = this.intent.getIntExtra(RecipeUpdateService.KEY_RECIPE_ID, -1);
         if (recipeId == -1) return;
 
         disposables.addAll(this.recipeRepository.getRecipeById(recipeId)
                 .map(recipe -> {
                     this.recipe = recipe;
-                    return Arrays.asList(recipe.steps);
+                    return Arrays.asList(recipe.ingredients);
                 })
-                .subscribe(steps -> {
-                    this.steps = steps;
+                .subscribe(ingredients -> {
+                    this.ingredients = ingredients;
                     Timber.d("Thread=" + Thread.currentThread());
                 }));
     }
@@ -83,14 +82,14 @@ class RecipeListRemoteViewsFactory implements RemoteViewsService.RemoteViewsFact
 
     @Override
     public int getCount() {
-        if (this.steps == null) return 0;
-        return steps.size();
+        if (this.ingredients == null) return 0;
+        return ingredients.size();
     }
 
     @Override
     public RemoteViews getViewAt(int position) {
         RemoteViews remoteViews = new RemoteViews(context.getPackageName(), android.R.layout.simple_list_item_1);
-        remoteViews.setTextViewText(android.R.id.text1, steps.get(position).shortDescription);
+        remoteViews.setTextViewText(android.R.id.text1, ingredients.get(position).ingredient);
         final Intent fillIntent = new Intent();
 
         final Bundle masterBundle = new Bundle();
@@ -100,7 +99,7 @@ class RecipeListRemoteViewsFactory implements RemoteViewsService.RemoteViewsFact
 
         final Bundle detailBundle = new Bundle();
         detailBundle.putInt(RecipeAllDetailFragment.KEY_RECIPE_ID, recipe.id);
-        detailBundle.putInt(RecipeAllDetailFragment.KEY_STEP_ID, steps.get(position).id);
+        detailBundle.putInt(RecipeAllDetailFragment.KEY_STEP_ID, 0);
 
         fillIntent.putExtra(SimpleFragmentHolderActivity.KEY_FRAGMENT_ARGS, masterBundle);
         fillIntent.putExtra(SimpleFragmentHolderActivity.KEY_FRAGMENT_DETAIL_ARGS, detailBundle);

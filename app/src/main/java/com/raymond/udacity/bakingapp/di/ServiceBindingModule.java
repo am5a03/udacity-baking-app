@@ -1,7 +1,7 @@
 package com.raymond.udacity.bakingapp.di;
 
-import com.raymond.udacity.bakingapp.ui.widget.RecipeStepListUpdateService;
-import com.raymond.udacity.bakingapp.ui.widget.RecipeStepListWidgetService;
+import com.raymond.udacity.bakingapp.ui.widget.RecipeUpdateService;
+import com.raymond.udacity.bakingapp.ui.widget.RecipeIngredientListWidgetService;
 import com.raymond.udacity.bakingapp.ui.widget.RecipeWidgetProvider;
 
 import dagger.Module;
@@ -12,11 +12,11 @@ public abstract class ServiceBindingModule {
 
     @ServiceScoped
     @ContributesAndroidInjector
-    abstract RecipeStepListWidgetService recipeStepListWidgetService();
+    abstract RecipeIngredientListWidgetService recipeStepListWidgetService();
 
     @ServiceScoped
     @ContributesAndroidInjector
-    abstract RecipeStepListUpdateService recipeStepListUpdateService();
+    abstract RecipeUpdateService recipeStepListUpdateService();
 
     // FIXME: 4/28/2019 Should be a BroadcastReceiver btw...
     @ServiceScoped
