@@ -101,7 +101,7 @@ public class RecipeAllDetailFragment extends BaseFragment {
         super.onViewCreated(view, savedInstanceState);
         viewPager.setAdapter(pagerAdapter);
         tabLayout.setupWithViewPager(viewPager);
-        tabLayout.addOnTabSelectedListener(viewModel.tablayoutOnClickListener);
+        tabLayout.addOnTabSelectedListener(viewModel.getTablayoutOnClickListener());
 
         if (!isTwoPane) {
             final int orientation = getResources().getConfiguration().orientation;

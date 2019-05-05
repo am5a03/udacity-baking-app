@@ -24,22 +24,7 @@ public class RecipeAllDetailViewModel extends BaseViewModel {
 
     final MutableLiveData<Recipe> recipeMutableLiveData = new MutableLiveData<>();
     final MutableLiveData<Integer> selectViewPagerItemLiveData = new MutableLiveData<>();
-    final TabLayout.OnTabSelectedListener tablayoutOnClickListener = new TabLayout.OnTabSelectedListener() {
-        @Override
-        public void onTabSelected(TabLayout.Tab tab) {
-            currentTabPos = tab.getPosition();
-        }
-
-        @Override
-        public void onTabUnselected(TabLayout.Tab tab) {
-
-        }
-
-        @Override
-        public void onTabReselected(TabLayout.Tab tab) {
-
-        }
-    };
+    final TabLayout.OnTabSelectedListener tablayoutOnClickListener = new TabSelectListener(this);
     private int currentTabPos = 0;
 
     void handleBroadcast(final Intent intent) {
@@ -77,5 +62,29 @@ public class RecipeAllDetailViewModel extends BaseViewModel {
 
     public TabLayout.OnTabSelectedListener getTablayoutOnClickListener() {
         return tablayoutOnClickListener;
+    }
+
+    static class TabSelectListener implements TabLayout.OnTabSelectedListener {
+
+        private RecipeAllDetailViewModel viewModel;
+
+        TabSelectListener(RecipeAllDetailViewModel viewModel) {
+            this.viewModel = viewModel;
+        }
+
+        @Override
+        public void onTabSelected(TabLayout.Tab tab) {
+            viewModel.currentTabPos = tab.getPosition();
+        }
+
+        @Override
+        public void onTabUnselected(TabLayout.Tab tab) {
+
+        }
+
+        @Override
+        public void onTabReselected(TabLayout.Tab tab) {
+
+        }
     }
 }

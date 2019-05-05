@@ -1,17 +1,17 @@
 package com.raymond.udacity.bakingapp.ui.detail;
 
 import android.os.Bundle;
+import android.os.SystemClock;
 
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.MutableLiveData;
 import androidx.test.ext.junit.runners.AndroidJUnit4;
 import androidx.test.rule.ActivityTestRule;
 
+import com.google.android.material.tabs.TabLayout;
 import com.raymond.udacity.bakingapp.models.db.Recipe;
 import com.raymond.udacity.bakingapp.testing.SingleFragmentActivity;
 import com.raymond.udacity.bakingapp.ui.NavController;
-import com.raymond.udacity.bakingapp.ui.detail.RecipeAllDetailFragment;
-import com.raymond.udacity.bakingapp.ui.detail.RecipeAllDetailViewModel;
 import com.raymond.udacity.bakingapp.util.MockDataSource;
 import com.raymond.udacity.bakingapp.util.ViewModelUtil;
 
@@ -19,7 +19,6 @@ import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.mockito.Mock;
 
 import java.util.List;
 
@@ -39,21 +38,28 @@ public class RecipeAllDetailFragmentTest {
     private final List<Recipe> mockList = MockDataSource.getInstance().getMockList();
 
     private final RecipeAllDetailFragment fragment = new RecipeAllDetailFragment();;
-    private RecipeAllDetailViewModel viewModel;
+    private RecipeAllDetailViewModel allDetailViewModel;
+    private RecipeDetailViewModel recipeDetailViewModel;
 
     @Before
     public void init() {
-        viewModel = mock(RecipeAllDetailViewModel.class);
+        allDetailViewModel = mock(RecipeAllDetailViewModel.class);
         final Bundle bundle = new Bundle();
         fragment.setArguments(bundle);
 
-        when(viewModel.getRecipeMutableLiveData()).thenReturn(new MutableLiveData<>());
-        when(viewModel.getSelectViewPagerItemLiveData()).thenReturn(new MutableLiveData<>());
+        when(allDetailViewModel.getRecipeMutableLiveData()).thenReturn(new MutableLiveData<>());
+        when(allDetailViewModel.getSelectViewPagerItemLiveData()).thenReturn(new MutableLiveData<>());
+        when(allDetailViewModel.getTablayoutOnClickListener()).thenReturn(new RecipeAllDetailViewModel.TabSelectListener(allDetailViewModel));
 
-        fragment.viewModelFactory = ViewModelUtil.createFor(viewModel);
+        fragment.viewModelFactory = ViewModelUtil.createFor(allDetailViewModel);
         fragment.navController = mock(NavController.class);
 
-        doNothing().when(viewModel).loadRecipeSteps(0);
+        doNothing().when(allDetailViewModel).loadRecipeSteps(0);
         activityTestRule.getActivity().setFragment(fragment, injector);
+    }
+
+    @Test
+    public void test() {
+        allDetailViewModel.getRecipeMutableLiveData().postValue(mockList.get(0));
     }
 }
