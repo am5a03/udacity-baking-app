@@ -11,6 +11,7 @@ import com.raymond.udacity.bakingapp.models.db.Recipe;
 import com.raymond.udacity.bakingapp.models.db.Step;
 import com.raymond.udacity.bakingapp.ui.BaseViewModel;
 import com.raymond.udacity.bakingapp.ui.detail.RecipeAllDetailFragment;
+import com.raymond.udacity.bakingapp.util.Util;
 
 import javax.inject.Inject;
 
@@ -20,23 +21,9 @@ import io.reactivex.schedulers.Schedulers;
 import static com.raymond.udacity.bakingapp.ui.step.RecipeStepListFragment.KEY_STEP_LIST_INDEX;
 
 public class RecipeStepListViewModel extends BaseViewModel {
-    private Recipe recipe;
     final MutableLiveData<Recipe> recipeLiveData = new MutableLiveData<>();
     final MutableLiveData<Bundle> stepClickLiveData = new MutableLiveData<>();
-
-    final View.OnClickListener stepClickListener = v -> {
-        final Step step = (Step) v.getTag();
-        final int stepIndex = (int) v.getTag(R.id.step_list_position);
-        final Bundle bundle = new Bundle();
-
-        bundle.putInt(RecipeAllDetailFragment.KEY_RECIPE_ID, this.recipe.id);
-        bundle.putInt(RecipeAllDetailFragment.KEY_STEP_ID, step.id);
-        bundle.putInt(KEY_STEP_LIST_INDEX, stepIndex);
-        bundle.putBoolean(SimpleFragmentHolderActivity.KEY_DISPLAY_HOME_AS_UP_ENABLED, true);
-        bundle.putString(SimpleFragmentHolderActivity.KEY_TITLE, this.recipe.name);
-
-        stepClickLiveData.postValue(bundle);
-    };
+    final ItemClickListener stepClickListener = new ItemClickListener(stepClickLiveData);
 
     @Inject
     RecipeStepListViewModel() {}
@@ -47,9 +34,41 @@ public class RecipeStepListViewModel extends BaseViewModel {
                         .subscribeOn(Schedulers.io())
                         .observeOn(AndroidSchedulers.mainThread())
                         .subscribe(recipe -> {
-                            RecipeStepListViewModel.this.recipe = recipe;
+                            stepClickListener.setRecipe(recipe);
                             recipeLiveData.postValue(recipe);
                         })
         );
+    }
+
+    public MutableLiveData<Recipe> getRecipeLiveData() {
+        return recipeLiveData;
+    }
+
+    public MutableLiveData<Bundle> getStepClickLiveData() {
+        return stepClickLiveData;
+    }
+
+    public View.OnClickListener getStepClickListener() {
+        return stepClickListener;
+    }
+
+    static class ItemClickListener implements View.OnClickListener {
+        private MutableLiveData<Bundle> liveData;
+        private Recipe recipe;
+
+        public ItemClickListener(MutableLiveData<Bundle> liveData) {
+            this.liveData = liveData;
+        }
+
+        public void setRecipe(Recipe recipe) {
+            this.recipe = recipe;
+        }
+
+        @Override
+        public void onClick(View v) {
+            final Step step = (Step) v.getTag();
+            final int stepIndex = (int) v.getTag(R.id.step_list_position);
+            liveData.postValue(Util.createBundleFromStep(recipe, step, stepIndex));
+        }
     }
 }

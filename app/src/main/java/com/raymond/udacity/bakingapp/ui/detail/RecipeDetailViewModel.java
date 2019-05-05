@@ -26,6 +26,10 @@ public class RecipeDetailViewModel extends BaseViewModel {
         );
     }
 
+    public MutableLiveData<StepWrapper> getStepLiveData() {
+        return stepLiveData;
+    }
+
     static class StepWrapper {
         final Step step;
         final boolean hasVideo;
